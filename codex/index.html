@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101d2b">
+  <meta name="description" content="从第一次打开 Codex，到能独立规划、实现、审查和交付项目。用真实任务一步步学会 Codex。">
+  <title>Codex 实战手册 — 从第一次提问，到独立交付</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .course-library{max-width:1160px;margin:0 auto;padding:76px 5.5vw 82px}.course-library .section-heading{margin-bottom:30px}.library-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.library-grid a{display:flex;flex-direction:column;gap:8px;padding:18px 19px;background:var(--white);border:1px solid var(--line);min-height:138px;transition:transform .18s,border-color .18s}.library-grid a:hover{transform:translateY(-2px);border-color:var(--orange)}.library-grid span{font:10px var(--mono);color:var(--orange-dark)}.library-grid strong{font-size:17px}.library-grid small{font-size:11px;line-height:1.7;color:var(--muted)}@media(max-width:760px){.course-library{padding:52px 7vw}.library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.library-grid{grid-template-columns:1fr}.library-grid a{min-height:0}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Codex 实战手册首页"><span class="brand-mark">C</span><span>Codex <b>实战手册</b></span></a>
+    <nav aria-label="主导航"><a href="quickstart.html">官方入门</a><a href="#official-library">官方课程目录</a><a href="#path">学习路线</a><a href="#lesson-two">第二步</a><a href="#lesson-three">第三步</a><a href="#lesson-four">第四步</a><a href="#method">学习方法</a><a href="#about">关于项目</a></nav>
+    <a class="top-cta" href="quickstart.html">官方文档入门 <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="kicker"><span class="live-dot"></span> 一份持续生长的开源手册</p>
+        <h1>从第一次提问，<br>到独立交付。</h1>
+        <p class="hero-lede">Codex 不只是一个会写代码的助手。学会给它上下文、拆任务、审结果，你就能把想法稳稳地做成东西。</p>
+        <div class="hero-actions"><a class="button button-orange" href="quickstart.html">从官方文档开始 <span aria-hidden="true">↗</span></a><a class="text-link" href="#path">先看看学习路线 <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-meta"><span class="avatar-stack" aria-hidden="true"><i>你</i><i>我</i><i>开源</i></span><span>从真实练习开始 · 每一步都能复用</span></div>
+      </div>
+      <div class="hero-art" aria-label="终端中的 Codex 第一条任务示例">
+        <div class="terminal-top"><div class="window-dots"><i></i><i></i><i></i></div><span>你的第一个任务</span><span class="terminal-menu">···</span></div>
+        <div class="terminal-body">
+          <div class="terminal-line"><span class="prompt">你&nbsp;›</span><span>先查看这个项目的结构，告诉我</span></div>
+          <div class="terminal-line indent">它用什么技术、入口文件在哪里。</div>
+          <div class="terminal-line indent">先不要修改文件。</div>
+          <div class="terminal-rule"></div>
+          <div class="terminal-response"><span class="response-mark">✳</span><span>我先检查项目文件，然后用<br>简短清单告诉你发现了什么。</span></div>
+          <div class="terminal-cursor" aria-hidden="true"></div>
+        </div>
+        <div class="terminal-foot"><span><i class="status-dot"></i> 先观察，再动手</span><span>练习 01 / 你的工作区</span></div>
+        <div class="art-note"><span class="note-icon">↳</span><span>好任务从清楚的边界开始</span></div>
+      </div>
+      <div class="hero-index" aria-hidden="true">你的学习现场 <span>01—∞</span></div>
+    </section>
+
+    <section class="start-section" id="start">
+      <div class="section-heading"><div><p class="section-label">现在就能做</p><h2>第一步：让 Codex 认识你的项目</h2></div><p>打开 Codex，选择一个你想了解的项目，然后把这段话发给它。</p></div>
+      <div class="prompt-card"><div class="prompt-card-label"><span class="prompt-symbol">✳</span><span>复制这条任务</span></div><p id="starter-prompt">请先查看这个项目的目录结构和主要文件。告诉我：它大概是做什么的、使用了哪些技术、从哪里启动。先不要修改任何文件，也不要安装依赖。</p><button class="copy-button" id="copy-prompt" type="button"><span aria-hidden="true">▢</span> <span>复制任务</span></button></div>
+      <p class="copy-feedback" id="copy-feedback" aria-live="polite"></p>
+      <div class="first-steps"><span><b>01</b> 打开 Codex</span><span><b>02</b> 选择一个项目文件夹</span><span><b>03</b> 粘贴任务并阅读回复</span></div>
+    </section>
+
+    <section class="lesson-section" id="lesson-two">
+      <div class="lesson-heading">
+        <div><p class="section-label">练习 02 · 把想法说成好任务</p><h2>让 Codex 知道要做什么，<br>也知道做到什么程度。</h2></div>
+        <p>一条好任务不必很长，但要补齐会影响行动和判断的信息。把目标、背景、限制和验收说清楚，Codex 才更容易一次走对方向。</p>
+      </div>
+
+      <div class="task-parts" aria-label="好任务的四个部分">
+        <article><span>01 / 目标</span><h3>要得到什么结果？</h3><p>用可以观察的结果描述想做的事，避免只说“帮我处理一下”。</p></article>
+        <article><span>02 / 背景</span><h3>现在是什么情况？</h3><p>补充项目状态、已有配置和缺少的东西，让 Codex 不必猜。</p></article>
+        <article><span>03 / 限制</span><h3>哪些边界要遵守？</h3><p>说明不能丢失什么、先做什么、哪些改动需要克制。</p></article>
+        <article><span>04 / 验收</span><h3>怎样算完成？</h3><p>写出可核对的结果，例如链接、分支、提交记录或运行表现。</p></article>
+      </div>
+
+      <div class="lesson-example">
+        <div class="example-intro"><p class="section-label">真实练习</p><h3>把“初始化 Git 并发布”说具体</h3><p>最初的想法已经说出方向；再补上检查步骤、保护边界和验收结果，任务就更安全，也更容易核对。</p>
+          <div class="prompt-contrast"><span class="contrast-label">起初</span><p>目标：初始化 Git 仓库并提交。背景：Git 已配置，GitHub 还没有创建对应仓库。验收：提交并发布当前仓库内容到 GitHub。</p></div>
+          <div class="prompt-contrast improved"><span class="contrast-label">补充后</span><p>先检查当前目录的 Git 状态，确认是否已经初始化仓库，并查看现有文件和未提交的改动。如果尚未初始化，请初始化并提交当前项目内容；不要覆盖或丢弃已有内容。然后在 GitHub 创建对应的私有仓库并推送当前分支。完成后告诉我仓库地址、分支和提交记录。</p></div>
+        </div>
+        <div class="lesson-checklist"><p class="section-label">为什么这样更清楚</p><ul><li>先检查状态，避免把已有仓库当成空目录。</li><li>明确保留现有内容，给出了安全边界。</li><li>把“发布成功”拆成仓库、分支和提交记录，方便核实。</li><li>说明私有可见性，避免对仓库公开程度产生歧义。</li></ul><div class="iteration-note"><b>中途也可以校准</b><p>如果 Codex 的理解和你的目标不一致，直接补充缺少的背景或调整验收标准，不必等它做完才纠正。</p></div></div>
+      </div>
+
+      <div class="lesson-exercise"><span class="exercise-badge">轮到你</span><p>选一个你最近想完成的小目标，分别写下目标、背景、限制和验收。发送前再问自己：Codex 是否知道该先检查什么？有没有需要保护的内容？完成后我能看到什么证据？</p></div>
+    </section>
+
+    <section class="lesson-section lesson-three" id="lesson-three">
+      <div class="lesson-heading">
+        <div><p class="section-label">练习 03 · 让项目说明替你记住规则</p><h2>把会反复交代的事，<br>写进项目自己的说明里。</h2></div>
+        <p>任务提示适合说明“这一次要做什么”；`AGENTS.md` 适合保存这个项目长期有效的背景和约定。Codex 会把它作为项目指导来参考，但文件内容仍要由你核对。</p>
+      </div>
+
+      <div class="task-parts" aria-label="适合写入项目说明的内容">
+        <article><span>01 / 项目目标</span><h3>这个项目是做什么的？</h3><p>用一两句话讲清服务对象和希望达成的结果。</p></article>
+        <article><span>02 / 技术与运行</span><h3>如何开始和预览？</h3><p>记录真实使用的技术、入口文件和必要命令。</p></article>
+        <article><span>03 / 长期约定</span><h3>哪些习惯要保持？</h3><p>写下代码风格、页面设计或验证方式等稳定规则。</p></article>
+        <article><span>04 / 操作边界</span><h3>哪些事情需要谨慎？</h3><p>记录项目特有的限制，以及需要先检查或询问的操作。</p></article>
+      </div>
+
+      <div class="lesson-example">
+        <div class="example-intro"><p class="section-label">用当前项目做例子</p><h3>一份短小、可执行的项目说明</h3><p>这些内容来自你刚刚确认的项目目标和当前文件，不需要搬进所有背景资料。</p>
+          <pre class="agents-sample"><code># AGENTS.md
+
+## 项目目标
+这是一个 Codex 自学网站，引导用户循序渐进地学习 Codex，并成长为熟练的 Codex 使用者。
+
+## 技术与预览
+- 使用原生 HTML、CSS 和 JavaScript。
+- 本地从 index.html 预览。
+- 无需安装依赖或运行构建工具。
+
+## 页面约定
+- 沿用现有视觉风格。
+- 维护移动端布局。
+- 修改页面内导航时，确认链接目标存在。</code></pre>
+        </div>
+        <div class="lesson-checklist"><p class="section-label">写规则时记住</p><ul><li>写长期有效的项目规则；单次任务目标仍放在当前对话。</li><li>先从 README 和现有代码核对事实，不把猜测写成要求。</li><li>规则要具体到 Codex 能照着做，也不要把说明写得冗长。</li><li>改规则文件前先看已有内容，避免覆盖团队已经确认的约定。</li></ul><div class="iteration-note"><b>先起草，再确认</b><p>可以让 Codex 先阅读项目并提出草案，指出每条规则依据；你核对准确后，再决定是否写入根目录的 `AGENTS.md`。</p></div></div>
+      </div>
+
+      <div class="lesson-exercise"><span class="exercise-badge">轮到你</span><p>挑出三条你希望 Codex 每次进入项目都遵守的规则。分别判断：它是项目事实、长期约定，还是只适用于某一次任务？只把前两类中确实稳定的内容写进项目说明。</p></div>
+    </section>
+
+    <section class="lesson-section lesson-four" id="lesson-four">
+      <div class="lesson-heading">
+        <div><p class="section-label">练习 04 · 审查、验证，再发布</p><h2>先看清改了什么，<br>再带着证据交付。</h2></div>
+        <p>Codex 完成任务后，工作还没结束。先检查改动是否符合目标，再用合适的方法验证，最后提交并推送；如果要上线，还要确认部署结果。</p>
+      </div>
+
+      <div class="task-parts" aria-label="交付前的四个步骤">
+        <article><span>01 / 审查</span><h3>检查全部改动</h3><p>看 Git 状态、差异和新文件，确认内容都在任务范围内。</p></article>
+        <article><span>02 / 验证</span><h3>收集实际证据</h3><p>按项目特点运行检查，并亲自查看关键页面或功能。</p></article>
+        <article><span>03 / 提交</span><h3>保存一个清楚的版本</h3><p>只暂存确认过的文件，再检查暂存差异并写明提交目的。</p></article>
+        <article><span>04 / 发布</span><h3>推送并确认结果</h3><p>推送到目标分支；若触发部署，再查看工作流是否成功。</p></article>
+      </div>
+
+      <div class="lesson-example">
+        <div class="example-intro"><p class="section-label">用这个静态网站做例子</p><h3>每一步都要有对应证据</h3><p>不同项目要用不同的验证方法。不要因为运行了一个命令，就默认页面体验、发布流程也都没问题。</p>
+          <div class="prompt-contrast"><span class="contrast-label">审查与验证</span><p><code>git status</code> 检查修改和未跟踪文件；阅读差异，确认范围。对于这个网站，还要检查页面内链接、移动端布局和复制任务按钮，并运行 <code>git diff --check</code>。</p></div>
+          <div class="prompt-contrast improved"><span class="contrast-label">提交与发布</span><p>确认暂存内容后创建本地提交，再将 <code>main</code> 推送到 GitHub。推送只说明源码已上传；本项目的 GitHub Pages 工作流还要运行成功，才能确认网站部署完成。</p></div>
+        </div>
+        <div class="lesson-checklist"><p class="section-label">交付前核对</p><ul><li>所有改动都已看过，包括新文件和暂存区内容。</li><li>验证方式与本次改动相匹配，结果有实际输出或页面证据。</li><li>提交中只包含这次确认要交付的文件。</li><li>推送后检查 GitHub Actions；部署任务成功后再分享网站地址。</li></ul><div class="iteration-note"><b>Codex 审查是额外一双眼睛</b><p>它可以帮忙找问题，但不能代替适当的检查、人工判断和发布结果确认。</p></div></div>
+      </div>
+
+      <div class="lesson-exercise"><span class="exercise-badge">轮到你</span><p>下次完成一项改动时，先让 Codex 只读审查 Git 状态和差异，再决定是否修正；随后明确验证方式。提交前查看暂存内容，推送后确认工作流结果，并记录提交号和部署地址。</p></div>
+    </section>
+
+    <section class="course-library" id="official-library">
+      <div class="section-heading"><div><p class="section-label">OpenAI 官方文档学习</p><h2>所有专题，集中在一个站点</h2></div><p>从入门和基础使用，到 Workflows 与 Configuration；每个主题都可以独立阅读，也能随时返回本目录切换。</p></div>
+      <div class="library-grid">
+        <a href="quickstart.html"><span>01 · 入门</span><strong>Quickstart</strong><small>认识使用入口、Work、Codex 与导入流程</small></a>
+        <a href="foundations.html"><span>02 · 基础</span><strong>Foundations</strong><small>提示、模型、个性化、Skills、权限</small></a>
+        <a href="workflows-guide.html"><span>03 · Workflows</span><strong>工作流</strong><small>项目、插件、可视化、计划任务与长期工作</small></a>
+        <a href="configuration.html"><span>04 · Configuration</span><strong>配置</strong><small>个人默认、项目规则、扩展与组织边界</small></a>
+        <a href="capabilities-guide.html"><span>05 · Capabilities</span><strong>能力</strong><small>了解不同功能可以完成什么工作</small></a>
+        <a href="sites-guide.html"><span>06 · Sites</span><strong>Sites</strong><small>创建和发布站点的概念与用途</small></a>
+        <a href="dots-guide.html"><span>07 · dots</span><strong>dots</strong><small>持续跟进任务的云端助手</small></a>
+        <a href="chatgpt-space-guide.html"><span>08 · ChatGPT Space</span><strong>ChatGPT Space</strong><small>理解共享空间与协作场景</small></a>
+        <a href="reference-guide.html"><span>09 · Reference</span><strong>参考</strong><small>查找并使用官方参考资料</small></a>
+        <a href="developers-guide.html"><span>10 · Developers</span><strong>开发者</strong><small>开发工作流、运行环境、自动化与集成</small></a>
+        <a href="security-guide.html"><span>11 · Security</span><strong>安全与管理</strong><small>权限、沙箱、审批与代码安全</small></a>
+      </div>
+    </section>
+
+    <section class="path-section" id="path">
+      <div class="section-heading path-heading"><div><p class="section-label">从新手到熟练</p><h2>一条做出来的学习路线</h2></div><p>每一阶段都围绕一个真实结果。完成练习后，你带走的不只是知识，还有可以继续用的项目成果。</p></div>
+      <div class="path-layout">
+        <div class="path-progress"><span>学习路线</span><div class="progress-line"><i></i></div><span>从这里开始</span></div>
+        <div class="path-list">
+          <article class="path-item active"><div class="path-marker"><span>00</span></div><div class="path-content"><div class="path-meta"><span class="path-state">现在开始</span><span>官方文档 · Get started</span></div><h3>学习 ChatGPT 与 Codex 入门文档</h3><p>先认识使用入口、Work 任务和设置导入，再进入 Foundations 学习提示、个性化、模型与权限等核心使用方法。</p><div class="path-skills"><span>Chat / Work / Codex</span><span>任务场景</span><span>导入设置</span></div><a href="quickstart.html" class="path-link">开始 Get started <span aria-hidden="true">↗</span></a><a href="foundations.html" class="path-link">继续 Foundations <span aria-hidden="true">↗</span></a></div></article>
+          <article class="path-item"><div class="path-marker"><span>01</span></div><div class="path-content"><div class="path-meta"><span>入门 · 约 20 分钟</span></div><h3>熟悉你的工作区</h3><p>认识 Codex 的界面、工作目录和对话方式。先学会让它读懂项目，再决定下一步。</p><div class="path-skills"><span>工作区</span><span>上下文</span><span>安全边界</span></div><a href="#start" class="path-link">开始练习 <span aria-hidden="true">↗</span></a></div></article>
+          <article class="path-item"><div class="path-marker"><span>02</span></div><div class="path-content"><div class="path-meta"><span>基础 · 逐步练习</span></div><h3>把想法说成好任务</h3><p>练习描述目标、补充背景、设定限制，并在过程中及时校准方向。</p><div class="path-skills"><span>任务拆解</span><span>提示与上下文</span><span>迭代</span></div><a href="#lesson-two" class="path-link">查看本课 <span aria-hidden="true">↗</span></a></div></article>
+          <article class="path-item"><div class="path-marker"><span>03</span></div><div class="path-content"><div class="path-meta"><span>进阶 · 用代码库协作</span></div><h3>让项目说明替你记住规则</h3><p>建立清晰的项目说明，让 Codex 每次开始工作都能遵循你的约定。</p><div class="path-skills"><span>项目指令</span><span>AGENTS.md</span><span>可复用工作流</span></div><a href="#lesson-three" class="path-link">查看本课 <span aria-hidden="true">↗</span></a></div></article>
+          <article class="path-item"><div class="path-marker"><span>04</span></div><div class="path-content"><div class="path-meta"><span>熟练 · 放心交付</span></div><h3>审查、验证，再发布</h3><p>读懂改动，运行合适的验证，准备提交，让协作成果经得起检查。</p><div class="path-skills"><span>代码审查</span><span>验证</span><span>GitHub 发布</span></div><a href="#lesson-four" class="path-link">查看本课 <span aria-hidden="true">↗</span></a></div></article>
+          <article class="path-item final-item"><div class="path-marker"><span>∞</span></div><div class="path-content"><div class="path-meta"><span>持续成长</span></div><h3>把 Codex 用进真实工作</h3><p>探索更长任务、自动化和团队协作，把有效经验沉淀为自己的工作方法。</p><div class="path-skills"><span>复杂任务</span><span>团队实践</span><span>持续复盘</span></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="method-section" id="method">
+      <div class="method-title"><p class="section-label">学习的方法</p><h2>每学一点，<br>就用它做点什么。</h2></div>
+      <div class="method-steps"><article><span class="method-number">A</span><h3>先看真实问题</h3><p>从你手边的项目和任务出发，不背一堆用不上的术语。</p></article><article><span class="method-number">B</span><h3>亲手试一次</h3><p>每节课都有可以在 Codex 里完成的练习和清晰的完成标准。</p></article><article><span class="method-number">C</span><h3>读懂发生了什么</h3><p>检查改动、追问理由、总结方法，让能力留在自己手里。</p></article></div>
+    </section>
+
+    <section class="about-section" id="about"><div class="about-mark">C<span>✳</span></div><div><p class="section-label">一起把它做好</p><h2>这份手册，也是在真实学习中长出来的。</h2><p>我从刚安装 Codex 开始，边学边记录每一次尝试、问题和有效做法。课程会持续更新，也欢迎你把自己的经验带进来。</p><a class="text-link" href="https://github.com/" target="_blank" rel="noreferrer">准备在 GitHub 上公开 <span aria-hidden="true">↗</span></a></div><div class="about-aside"><span>一个正在进行的学习项目</span><strong>由新手出发，<br>为每一个新手编写。</strong></div></section>
+  </main>
+  <footer><a class="brand footer-brand" href="index.html"><span class="brand-mark">C</span><span>Codex <b>实战手册</b></span></a><span>从第一次提问，到独立交付。</span><a href="#top">回到顶部 ↑</a></footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03：GDScript 与游戏循环</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：03：GDScript 与游戏循环">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="03gdscript-与游戏循环">03：GDScript 与游戏循环</h1>
+<h2 id="学习目标">学习目标</h2>
+<p>读完后，你应能给节点附加脚本，理解常见生命周期回调，并用
+<code>delta</code> 编写与帧率无关的运动。</p>
+<h2 id="1-gdscript-的基本特征">1. GDScript 的基本特征</h2>
+<p>GDScript 是面向 Godot
+的高级、面向对象、渐进类型语言，使用缩进组织代码块。外观与 Python
+有相似之处，但它不是 Python，也不基于 Python。</p>
+<p>一个脚本文件隐式地代表一个类。<code>extends</code>
+指明它继承的引擎类型：</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Sprite2D</span></code></pre></div>
+<p>这表示脚本获得 <code>Sprite2D</code> 及其父类型的属性和方法，例如
+<code>texture</code>、<code>position</code>、<code>rotation</code> 和
+<code>_process()</code>。</p>
+<h2 id="2-变量常量和函数">2. 变量、常量和函数</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node2D</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> MAX_HEALTH :<span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> health: int <span class="op">=</span> MAX_HEALTH</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> speed :<span class="op">=</span> <span class="fl">400.0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">heal</span>(amount: int) <span class="op">-&gt;</span> void:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    health <span class="op">=</span> <span class="fu">mini</span>(health <span class="op">+</span> amount, MAX_HEALTH)</span></code></pre></div>
+<ul>
+<li><code>const</code> 定义常量，名称使用 <code>ALL_CAPS</code>。</li>
+<li>脚本顶部的 <code>var</code> 是成员变量，每个脚本实例各有一份。</li>
+<li>函数内部的 <code>var</code> 是局部变量，只在该作用域内存在。</li>
+<li><code>:=</code> 让编译器根据初始值推断类型。</li>
+<li><code>health: int</code> 显式声明类型。</li>
+<li><code>func</code> 定义函数，缩进表示函数体。</li>
+</ul>
+<p>命名约定：节点/类使用 PascalCase，变量和函数使用 snake_case，常量使用
+ALL_CAPS。</p>
+<h2 id="3-三个常见回调">3. 三个常见回调</h2>
+<h3 id="_init"><code>_init()</code></h3>
+<p>对象在内存中创建时调用，类似构造入口。此时不适合假设子节点已经准备好。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_init</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Created&quot;</span>)</span></code></pre></div>
+<h3 id="_ready"><code>_ready()</code></h3>
+<p>节点及其子节点已经进入场景树并完成实例化后调用，适合获取子节点、连接信号。</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> timer <span class="op">=</span> <span class="fu">get_node</span>(<span class="st">&quot;Timer&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    timer.timeout.<span class="bu">connect</span>(<span class="co">_on_timer_timeout</span>)</span></code></pre></div>
+<h3 id="_processdelta"><code>_process(delta)</code></h3>
+<p>节点每帧收到一次更新回调。<code>delta</code>
+是距上一帧经过的秒数。</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    rotation <span class="op">+=</span> <span class="cn">PI</span> <span class="op">*</span> delta</span></code></pre></div>
+<p>物理相关运动通常还要学习
+<code>_physics_process(delta)</code>；基础显示与输入轮询示例可以先使用
+<code>_process(delta)</code>。</p>
+<h2 id="4-为什么运动要乘-delta">4. 为什么运动要乘
+<code>delta</code></h2>
+<p>如果每帧直接执行：</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>position.x <span class="op">+=</span> <span class="dv">10</span></span></code></pre></div>
+<p>移动速度会随帧率改变。帧率越高，每秒移动次数越多。</p>
+<p>改成：</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>position.x <span class="op">+=</span> speed <span class="op">*</span> delta</span></code></pre></div>
+<p>其中 <code>speed</code> 表示“像素/秒”，<code>speed * delta</code>
+表示这一帧应移动的距离。无论帧间隔长短如何变化，运动都以时间为基准。</p>
+<p>旋转同理：Godot 默认使用弧度，<code>PI</code>
+表示半圈弧度，<code>TAU</code> 表示整圈弧度。</p>
+<h2 id="5-vector2方向与速度">5. Vector2：方向与速度</h2>
+<p><code>Vector2</code> 同时包含 x、y
+两个分量，可表示位置、方向或速度。</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Sprite2D</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> speed :<span class="op">=</span> <span class="fl">400.0</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> angular_speed :<span class="op">=</span> <span class="cn">PI</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    rotation <span class="op">+=</span> angular_speed <span class="op">*</span> delta</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> velocity :<span class="op">=</span> Vector2.UP.<span class="fu">rotated</span>(rotation) <span class="op">*</span> speed</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    position <span class="op">+=</span> velocity <span class="op">*</span> delta</span></code></pre></div>
+<p>逐层理解：</p>
+<ol type="1">
+<li><code>Vector2.UP</code> 是向上的单位方向。</li>
+<li><code>.rotated(rotation)</code> 按当前节点朝向旋转方向。</li>
+<li>乘以 <code>speed</code> 得到速度向量。</li>
+<li>乘以 <code>delta</code> 得到本帧位移。</li>
+</ol>
+<p>这种直接修改 <code>position</code>
+的方式不会自动处理墙体或地面碰撞；需要碰撞时应使用适当的物理节点和方法。</p>
+<h2 id="6-初学者常见的语法与数值陷阱">6. 初学者常见的语法与数值陷阱</h2>
+<h3 id="整数除法">整数除法</h3>
+<p>两个整数相除会执行整数除法：</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">5</span> <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">5</span> <span class="op">/</span> <span class="fl">2.0</span>)</span></code></pre></div>
+<p>第一个结果是 <code>2</code>，第二个结果是
+<code>2.5</code>。需要小数时，至少让一个操作数是浮点数或进行类型转换。</p>
+<h3 id="缩进错误">缩进错误</h3>
+<p>函数体、条件体和循环体必须正确缩进。出现
+<code>Indented block expected</code> 时，先检查冒号与下一行缩进。</p>
+<h3 id="把成员变量当全局变量">把成员变量当全局变量</h3>
+<p>成员变量属于当前脚本实例。另一个同类实例会有自己的副本，不会自动共享。</p>
+<h3 id="忘记继承带来的能力">忘记继承带来的能力</h3>
+<p>Inspector 中看到的很多属性来自父类型。查 API
+时不仅要看当前类，也要看它继承的类。</p>
+<h2 id="小结">小结</h2>
+<p>脚本通过继承扩展节点；<code>_ready()</code>
+适合初始化场景关系，<code>_process(delta)</code>
+适合每帧更新；速度和角速度乘以
+<code>delta</code>，运动才以秒而不是帧为单位。</p>
+<h2 id="官方来源与下一步">官方来源与下一步</h2>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/scripting_first_script.html">Creating
+your first script</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html">GDScript
+reference</a></li>
+<li>上一篇：<a href="02-场景实例化.html">场景实例化</a></li>
+<li>下一篇：<a href="04-输入与信号.html">输入与信号</a></li>
+<li>对应练习：<a
+href="../exercises/02-脚本输入与信号.html">脚本、输入与信号</a></li>
+</ul>
+</main>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="通过真实任务学习 ChatGPT 项目、插件、可视化、计划任务与长期工作流。">
+<title>Workflows｜ChatGPT 工作流学习页</title>
+<style>
+:root{--ink:#162d3a;--muted:#526b77;--paper:#f3f7f7;--white:#fff;--line:#d7e2e4;--blue:#176b87;--teal:#0c897e;--gold:#f0bd53;--soft:#e4f1f1;--nav:#102936;--navmuted:#afc3cb;--shadow:0 18px 50px rgba(15,48,62,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.72}a{color:var(--blue);text-decoration-thickness:1px;text-underline-offset:3px}a:hover{color:var(--teal)}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}.side{background:var(--nav);color:#fff;padding:30px 22px;position:sticky;top:0;height:100vh;overflow:auto}.brand{font-size:13px;letter-spacing:.04em;color:var(--navmuted);margin-bottom:34px}.brand strong{display:block;color:#fff;font-size:19px;letter-spacing:0;margin-top:4px}.side h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--navmuted);margin:25px 0 9px}.side nav{display:grid;gap:4px}.side nav a{padding:8px 10px;border-radius:7px;color:#d5e2e6;text-decoration:none;font-size:14px}.side nav a:hover,.side nav a:focus-visible{background:#204452;color:#fff;outline:none}.side .current{color:#fff;background:#1c4653}.side .note{margin-top:28px;border-top:1px solid #35515e;padding-top:16px;color:#abc0c8;font-size:12px}
+main{max-width:1100px;width:100%;padding:50px clamp(24px,6vw,86px) 90px;margin:0 auto}.hero{padding:28px 0 36px;border-bottom:1px solid var(--line);position:relative}.hero:after{content:"";position:absolute;right:3%;top:9px;width:116px;height:116px;border:1px solid #b9d1d4;border-radius:50%;box-shadow:0 0 0 16px rgba(23,107,135,.045),0 0 0 34px rgba(23,107,135,.035)}.eyebrow{font-size:13px;font-weight:700;color:var(--teal);margin:0 0 12px}.hero h1{font-size:clamp(38px,6vw,66px);letter-spacing:-.045em;line-height:1.08;max-width:700px;margin:0 0 17px}.hero p{font-size:18px;color:var(--muted);max-width:700px;margin:0}.scope{margin-top:25px;padding:14px 18px;background:var(--soft);border-left:3px solid var(--teal);max-width:770px;font-size:14px}
+section{padding:48px 0 8px;border-bottom:1px solid var(--line)}section:last-child{border-bottom:0}.section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}.section-head .idx{font-size:13px;color:var(--teal);font-weight:750}.section-head h2{font-size:27px;line-height:1.25;margin:0;letter-spacing:-.02em}.section-head .en{font-size:13px;color:var(--muted);margin-left:auto}.lead{font-size:17px;max-width:780px;color:#284652}.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}.panel{padding:17px 19px;background:var(--white);border:1px solid var(--line);border-radius:10px}.panel h3{font-size:16px;margin:0 0 7px}.panel p,.panel ul{margin:0;color:var(--muted);font-size:14px}.panel ul{padding-left:19px}.panel li+li{margin-top:5px}.callout{padding:15px 18px;background:#fff7e6;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;margin:18px 0;color:#5b4a27;font-size:14px}.flow{display:flex;align-items:stretch;gap:8px;margin:20px 0;flex-wrap:wrap}.flow span{flex:1 1 145px;padding:12px 14px;background:#e8f2f2;border-radius:8px;font-size:14px}.flow b{display:block;color:var(--ink);margin-bottom:3px}.table-wrap{overflow-x:auto;margin:18px 0}table{border-collapse:collapse;width:100%;background:var(--white);font-size:14px}th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}th{color:var(--ink);background:#e7f0f1;font-weight:700}td{color:var(--muted)}.term{font-weight:700;color:var(--ink)}.source{font-size:12px;margin:15px 0 0;color:var(--muted)}.sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;font-size:13px}.sources a{display:block;padding:8px 0;border-bottom:1px solid var(--line)}.end{margin-top:34px;padding:18px;border-top:2px solid var(--ink);font-size:15px;font-weight:650}.tag{display:inline-block;background:#dcebed;color:#19556a;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:650}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.side{position:relative;height:auto;padding:17px 20px}.brand{margin-bottom:14px}.side h2,.side .note{display:none}.side nav{display:flex;overflow:auto;gap:4px}.side nav a{white-space:nowrap}.side nav:not(.site-links) a:nth-child(1){display:none}main{padding-top:25px}.hero:after{width:72px;height:72px;right:5px;top:4px}.hero h1{max-width:80%}.cols,.sources{grid-template-columns:1fr}.section-head{flex-wrap:wrap}.section-head .en{margin-left:0;width:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+<div class="brand">学习指南<strong>Workflows</strong></div>
+<nav class="site-links" aria-label="学习站页面"><a href="index.html">全部课程</a><a href="quickstart.html">Quickstart</a><a href="foundations.html">Foundations</a><a href="configuration.html">Configuration</a><a href="developers-guide.html">Developers</a><a href="security-guide.html">Security</a><a href="workflows-guide.html">Workflows</a><a href="capabilities-guide.html">Capabilities</a><a href="sites-guide.html">Sites</a><a href="dots-guide.html">dots</a><a href="chatgpt-space-guide.html">ChatGPT Space</a><a href="reference-guide.html">Reference</a></nav>
+<h2>栏目内容</h2>
+<nav aria-label="章节导航">
+<a href="#overview">总览</a><a href="#projects">Projects and chats</a><a href="#plugins">Build plugins</a><a href="#visualizations">Visualizations</a><a href="#scheduled">Scheduled tasks</a><a href="#long-running">Long-running work</a><a href="#notifications">Notifications</a><a href="#pets">Pets</a><a href="#micro">Codex Micro</a><a href="#compare">功能对比</a><a href="#sources">官方来源</a>
+</nav>
+<div class="note">中文学习页<br>根据 OpenAI 官方 Learn 文档整理<br>更新核对：2026-10-22</div>
+</aside>
+<main>
+<header class="hero" id="overview">
+<p class="eyebrow">CHATGPT LEARN · WORKFLOWS</p>
+<h1>让工作持续、可复用、可跟进</h1>
+<p>Workflows（工作流）栏目汇集了组织长期任务、复用做事方式、生成可交互内容、安排未来工作与跟踪进度的功能。</p>
+<div class="scope"><strong>阅读范围：</strong>本页覆盖侧边栏 Workflows 下的八项内容。产品能力会因平台、账户、工作区设置和功能逐步开放而不同；使用前以自己的界面是否出现该功能为准。</div>
+</header>
+
+<section id="projects">
+<div class="section-head"><span class="idx">01</span><h2>项目与聊天</h2><span class="en">Projects and chats</span></div>
+<p class="lead"><span class="term">项目（Project）</span>把相关聊天、文件和指令放在一起，让持续工作拥有共享背景；<span class="term">聊天（Chat）</span>则承载某一次具体交流或一个独立结果。</p>
+<div class="cols">
+<article class="panel"><h3>何时使用项目</h3><ul><li>工作会持续一段时间或产出多个关联结果。</li><li>不同聊天需要参考相同资料、文件或背景。</li><li>同一项目内可为不同目标开独立聊天，保持每条对话聚焦。</li></ul></article>
+<article class="panel"><h3>两类项目</h3><ul><li><b>ChatGPT 项目（ChatGPT project）</b>：在 ChatGPT 中组织项目文件与相关聊天。</li><li><b>本地项目（local project）</b>：连接电脑上的一个或多个文件夹，便于围绕本地文件工作。</li></ul></article>
+</div>
+<div class="callout"><b>判断核心：</b>项目解决“背景和资料要在相关聊天间复用”；独立聊天适合一次完成且不需要共享项目背景的工作。任务是否复杂不是唯一标准。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/projects?surface=app">Projects and chats 官方文档</a></p>
+</section>
+
+<section id="plugins">
+<div class="section-head"><span class="idx">02</span><h2>构建插件</h2><span class="en">Build plugins</span></div>
+<p class="lead"><span class="term">插件（Plugin）</span>是可重复使用的任务包，帮助 ChatGPT 以一致方式完成某类工作。插件侧重复用“做事方式”，项目侧重复用“工作背景”。</p>
+<div class="table-wrap"><table><thead><tr><th>组成</th><th>含义</th><th>例子</th></tr></thead><tbody><tr><td><b>App（应用）</b></td><td>连接外部服务，读取允许访问的信息或执行支持的操作。</td><td>从云盘找文档。</td></tr><tr><td><b>Skill（技能）</b></td><td>提供完成任务的步骤、规则或格式。</td><td>按固定结构总结文档。</td></tr><tr><td><b>App + Skill</b></td><td>先获取外部资料，再按可复用规则处理。</td><td>从云盘找两份文件，再按清单比较。</td></tr></tbody></table></div>
+<p>App 和 Skill 可以单独使用，也可以组合。已经上传到聊天的文件通常不需要 App；只有工作流要访问外部服务或在那里执行操作时，才需要相应 App。</p>
+<div class="flow"><span><b>1 · 定义任务</b>说明重复做什么，并准备理想结果示例。</span><span><b>2 · 描述输入与输出</b>明确提供什么资料、结果给谁看、格式和语气。</span><span><b>3 · 加入规则与材料</b>补充模板、参考文件、缺失信息的处理方式。</span><span><b>4 · 测试和修改</b>用熟悉案例检查格式、来源和边界，再迭代。</span></div>
+<p><span class="term">插件创建器（Plugin Creator）</span>可通过对话帮助搭建或编辑插件；官方这套对话式创建流程不要求编写代码。创建后可在新聊天输入 <code>@</code> 选择插件并使用。先测试再分享；分享与安装是不同步骤，使用者仍需要所需权限和外部应用连接。</p>
+<div class="callout"><b>权限边界：</b>插件不会自动增加对云盘或其他服务的访问权限。工作区设置、连接授权和用户在源服务中的权限仍然生效。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/build-plugins">Build plugins 官方文档</a></p>
+</section>
+
+<section id="visualizations">
+<div class="section-head"><span class="idx">03</span><h2>可视化</h2><span class="en">Visualizations</span></div>
+<p class="lead"><span class="term">可视化（Visualization）</span>把问题、想法或资料变成图表、地图、示意图、计算器、模拟或可交互解释，适合“看关系、改参数或动手探索”比单看文字更清楚的情况。</p>
+<div class="table-wrap"><table><thead><tr><th>需求</th><th>合适形式</th></tr></thead><tbody><tr><td>展示结构、关系或步骤</td><td>示意图 / diagram</td></tr><tr><td>呈现数字数据与比较</td><td>图表 / chart</td></tr><tr><td>表达地点或空间分布</td><td>地图 / map</td></tr><tr><td>需要改变输入、时间、运动或空间关系</td><td>交互式可视化 / interactive visualization</td></tr><tr><td>要长期托管、通过链接分享，或保留数据</td><td>网站 / Site</td></tr></tbody></table></div>
+<p>提出请求时，说明期望结果、来源资料、要回答的问题和有用的交互方式。可在支持的 Chat 或 ChatGPT Work 中用 <code>@Visualize</code> 调用。生成结果通常是创建时信息的快照，不一定会随连接的数据源持续同步；分享前应检查数据、假设、标签与无障碍体验。</p>
+<div class="callout"><b>可用性：</b>官方文档标注网页端对受支持账户开放，桌面端和移动端处于逐步开放状态；Codex CLI 与 IDE 扩展不支持渲染可视化。界面中是否出现 Visualize 是可用的重要信号。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/visualizations">Visualizations 官方文档</a></p>
+</section>
+
+<section id="scheduled">
+<div class="section-head"><span class="idx">04</span><h2>计划任务</h2><span class="en">Scheduled tasks</span></div>
+<p class="lead"><span class="term">计划任务（Scheduled task）</span>让任务在预定时间重复运行；在部分支持的账户与平台上，也可以由特定应用事件触发。</p>
+<div class="cols">
+<article class="panel"><h3>按时间运行</h3><p>例如每天整理摘要、每周生成报告。独立任务每次从已保存的提示开始；聊天内的计划任务则回到原聊天并使用既有上下文。</p></article>
+<article class="panel"><h3>按事件触发</h3><p>支持的 Gmail、Slack 或 GitHub 事件可以启动任务。触发条件决定“何时运行”，保存的提示决定“运行时做什么”。事件触发与时间计划不能合并在同一个任务里。</p></article>
+</div>
+<p>任务可以结合文件、连接的工具、插件或 Skill。网页任务不能直接访问电脑上的文件夹；桌面端本地项目任务需要电脑开机、ChatGPT 应用运行且项目仍在磁盘上。Git 仓库任务可选择在本地项目运行或使用独立 worktree（工作树）隔离改动。</p>
+<div class="callout"><b>使用建议：</b>先在普通聊天里验证提示词，再创建计划；检查前几次运行并调整范围、工具或频率。后台运行前也要明确权限边界与审阅方式。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/automations">Scheduled tasks 官方文档</a></p>
+</section>
+
+<section id="long-running">
+<div class="section-head"><span class="idx">05</span><h2>长期任务</h2><span class="en">Long-running work</span></div>
+<p class="lead">对于需要多步完成的工作，明确最终成果、限制条件和完成标准，并在同一聊天中持续补充背景或调整要求。</p>
+<div class="table-wrap"><table><thead><tr><th>目标要素</th><th>写清楚什么</th><th>例子</th></tr></thead><tbody><tr><td><b>结果（Outcome）</b></td><td>要交付什么，而非只描述要做的动作。</td><td>完成并交付迁移后的代码。</td></tr><tr><td><b>限制（Constraints）</b></td><td>必须遵循的工具、范围、兼容要求或禁用做法。</td><td>保留已有行为，使用严格类型。</td></tr><tr><td><b>验证（Verification）</b></td><td>哪些检查能证明完成。</td><td>编译通过、测试通过、满足评审标准。</td></tr></tbody></table></div>
+<p><span class="term">目标模式（Goal mode）</span>用 <code>/goal</code> 启动，可在工作期间暂停、继续或编辑目标；如果结果还不清楚，可先用 <code>/plan</code> 梳理约束和可衡量的成功标准。相关子任务放在项目中；彼此独立、可并行的任务可分开聊天。</p>
+<div class="callout"><b>与计划任务的区别：</b>长期任务强调持续推进同一目标并由你随时介入；计划任务强调按时间或事件自动启动。两者都可能持续较久，但“怎样启动、如何维持上下文”不同。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/long-running-work">Long-running work 官方文档</a></p>
+</section>
+
+<section id="notifications">
+<div class="section-head"><span class="idx">06</span><h2>通知与活动</h2><span class="en">Notifications</span></div>
+<p class="lead"><span class="term">通知（Notification）</span>提醒你有工作需要关注。设置项和送达渠道会随使用界面不同而变化。</p>
+<div class="cols">
+<article class="panel"><h3>系统通知</h3><p>可设置任务完成时是否提醒，例如始终提醒、应用在后台时提醒或不提醒；权限请求和问题提醒也有单独控制。网页端可按账户设置推送、电子邮件或短信等渠道。</p></article>
+<article class="panel"><h3>活动视图（Activity view）</h3><p>侧边栏的铃铛视图集中查看未读、运行中、等待回复的聊天；可筛选 Chat、Work、Pinned 或 Scheduled 等内容。</p></article>
+</div>
+<div class="callout"><b>容易混淆：</b>活动视图是应用内查看聊天状态的地方；系统通知是操作系统或账户渠道发来的提醒。两者相关，但不是同一个控制面板。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/notifications">Notifications 官方文档</a></p>
+</section>
+
+<section id="pets">
+<div class="section-head"><span class="idx">07</span><h2>宠物助手</h2><span class="en">Pets</span></div>
+<p class="lead"><span class="term">宠物（Pet）</span>是可选的动画伴侣，用于快捷开启聊天和跟踪工作状态。它改变外观与状态呈现，不会改变 ChatGPT 完成任务的方式。</p>
+<div class="table-wrap"><table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody><tr><td>Running（运行中）</td><td>聊天正在工作。</td></tr><tr><td>Needs input（需要输入）</td><td>等待你的批准、回答或决定。</td></tr><tr><td>Ready（已完成 / 可查看）</td><td>任务已完成，有未读活动。</td></tr><tr><td>Blocked（受阻）</td><td>任务失败或遇到系统问题。</td></tr></tbody></table></div>
+<p>桌面端的浮动宠物可以在其他应用上方显示，并跟踪多个聊天；网页端宠物能力较少。通过宠物控件新建的聊天默认不属于任何项目；要使用项目背景，应从主应用里的项目启动聊天。活动托盘与系统通知是分开的。</p>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/pets">Pets 官方文档</a></p>
+</section>
+
+<section id="micro">
+<div class="section-head"><span class="idx">08</span><h2>Codex Micro</h2><span class="en">Codex Micro</span></div>
+<p class="lead"><span class="term">Codex Micro</span>是与 ChatGPT 桌面应用配合使用的实体控制器，让你无需离开键盘就能查看、切换聊天、语音输入和触发常用动作。</p>
+<div class="cols">
+<article class="panel"><h3>Agent Keys（代理键）</h3><p>六个按键可跟踪聊天并用灯光显示状态，也可配置成优先聊天或自定义动作。</p></article>
+<article class="panel"><h3>Command Keys（命令键）</h3><p>六个按键可触发常见操作，如切换快速模式、批准或拒绝、继续到新聊天、按住说话和发送消息。</p></article>
+<article class="panel"><h3>摇杆与旋钮</h3><p>摇杆可绑定方向动作；旋钮可用于浏览输入栏选项、调整推理力度、滚动聊天或运行自定义动作。</p></article>
+<article class="panel"><h3>连接与设置</h3><p>通过 USB-C 或蓝牙连接；在 ChatGPT 桌面应用设置中配置按键、灯光和语音。实际硬件需设备本体，属于可选控制方式。</p></article>
+</div>
+<div class="callout"><b>与通知、宠物的区别：</b>Codex Micro 是硬件快捷控制器；宠物是屏幕上的动画状态伴侣；通知与活动视图用于提醒和查看状态。它们都能帮你跟进任务，但交互方式不同。</div>
+<p class="source">来源：<a href="https://learn.chatgpt.com/docs/features/codex-micro">Codex Micro 官方文档</a></p>
+</section>
+
+<section id="compare">
+<div class="section-head"><span class="idx">↔</span><h2>一页对照</h2><span class="en">Choose by the job</span></div>
+<div class="table-wrap"><table><thead><tr><th>你想完成的事</th><th>优先了解</th><th>核心作用</th></tr></thead><tbody>
+<tr><td>跨多个聊天共享资料与背景</td><td>Project（项目）</td><td>组织持续工作的上下文。</td></tr>
+<tr><td>反复按同一方法处理任务</td><td>Plugin（插件）/ Skill（技能）</td><td>复用步骤、规则；App 可连外部服务。</td></tr>
+<tr><td>把关系或数据变得可见、可操作</td><td>Visualization（可视化）</td><td>图表、地图、示意图和交互解释。</td></tr>
+<tr><td>让任务稍后按时或事件自动开始</td><td>Scheduled task（计划任务）</td><td>按时间 / 支持的事件触发。</td></tr>
+<tr><td>持续推进一个多步目标</td><td>Long-running work（长期任务）</td><td>目标、约束、完成标准和持续跟进。</td></tr>
+<tr><td>查看哪些聊天在运行或等我回复</td><td>Activity view / Notifications</td><td>在应用内查看状态，或接收提醒。</td></tr>
+<tr><td>在其他应用工作时快速跟踪或启动聊天</td><td>Pet / Codex Micro</td><td>屏幕伴侣或实体快捷控制器。</td></tr>
+</tbody></table></div>
+<div class="end">记忆主线：项目管背景；插件管方法；可视化管呈现；计划任务管何时启动；长期任务管如何持续完成；通知、宠物和 Micro 管如何跟进与交互。</div>
+</section>
+
+<section id="sources">
+<div class="section-head"><span class="idx">↗</span><h2>官方来源</h2><span class="en">OpenAI Learn</span></div>
+<div class="sources">
+<a href="https://learn.chatgpt.com/docs/projects?surface=app">Projects and chats — 项目与聊天</a>
+<a href="https://learn.chatgpt.com/docs/build-plugins">Build plugins — 构建插件</a>
+<a href="https://learn.chatgpt.com/docs/visualizations">Visualizations — 可视化</a>
+<a href="https://learn.chatgpt.com/docs/automations">Scheduled tasks — 计划任务</a>
+<a href="https://learn.chatgpt.com/docs/long-running-work">Long-running work — 长期任务</a>
+<a href="https://learn.chatgpt.com/docs/notifications">Notifications — 通知</a>
+<a href="https://learn.chatgpt.com/docs/pets">Pets — 宠物助手</a>
+<a href="https://learn.chatgpt.com/docs/features/codex-micro">Codex Micro</a>
+</div>
+<p class="source">此学习页为官方资料的中文归纳，并非逐字翻译。功能可用范围可能变化；实际界面、计划权限和工作区设置优先。</p>
+</section>
+</main>
+</div>
+</body>
+</html>

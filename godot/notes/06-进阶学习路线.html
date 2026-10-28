@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>06：进阶学习路线</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：06：进阶学习路线">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="06进阶学习路线">06：进阶学习路线</h1>
+<h2 id="学习目标">学习目标</h2>
+<p>完成基础躲避游戏后，选择一个小范围功能继续深入，而不是同时学习所有手册章节。以下顺序从巩固
+2D 基础逐步过渡到 3D。</p>
+<h2 id="1-物理先选对碰撞对象">1. 物理：先选对碰撞对象</h2>
+<p>官方物理入门区分四类 2D 碰撞对象：</p>
+<ul>
+<li><code>Area2D</code>：检测重叠、进入和离开，也可影响区域内的物理属性。</li>
+<li><code>StaticBody2D</code>：通常不移动的环境碰撞体，例如墙体和地面。</li>
+<li><code>RigidBody2D</code>：由物理引擎模拟运动，通过力和冲量等方式影响。</li>
+<li><code>CharacterBody2D</code>：由代码实现移动和碰撞响应，常用于需要精确控制的角色。</li>
+</ul>
+<p>继续学习：</p>
+<ul>
+<li><code>CollisionShape2D</code> 与 Shape2D 的关系。</li>
+<li>Collision Layer 表示“我在哪一层”，Collision Mask
+表示“我扫描哪些层”。</li>
+<li><code>_physics_process(delta)</code> 与固定物理更新频率。</li>
+<li>不要通过缩放 CollisionShape2D
+节点来调整形状大小，应使用形状自身的尺寸控制。</li>
+</ul>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html">Physics
+introduction</a></p>
+<h2 id="2-动画从帧动画到属性动画">2. 动画：从帧动画到属性动画</h2>
+<p>躲避游戏已经使用 <code>AnimatedSprite2D</code> 播放序列帧。下一步学习
+<code>AnimationPlayer</code>，理解轨道、关键帧、循环和动画切换。</p>
+<p>建议练习：给开始界面添加简单的淡入或按钮强调动画，先不要同时引入复杂状态机。</p>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/tutorials/animation/index.html">Animation</a></p>
+<h2 id="3-ui适应不同窗口尺寸">3. UI：适应不同窗口尺寸</h2>
+<p>从 <code>Control</code>、Container、Anchor 和 Theme
+入手。重点不是把界面摆得更复杂，而是让窗口尺寸变化时仍然清晰可用。</p>
+<p>建议练习：给 HUD
+增加最高分一行，并检查窗口缩放后文字和按钮是否仍位于预期区域。</p>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/tutorials/ui/index.html">User
+interface (UI)</a></p>
+<h2 id="4-音频区分音乐与音效">4. 音频：区分音乐与音效</h2>
+<p>先学习音频流播放、总线和音量控制，再考虑空间音频。2D
+小游戏可从背景音乐、受击音效和按钮音效开始。</p>
+<p>建议练习：让音乐循环播放，受击时播放短音效，并提供静音开关。音频资源仍需遵守各自许可证。</p>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/tutorials/audio/index.html">Audio</a></p>
+<h2 id="5-数据与存档只保存必要状态">5. 数据与存档：只保存必要状态</h2>
+<p><code>res://</code> 指向项目资源；运行时的用户数据通常写入
+<code>user://</code>。保存前先明确哪些状态需要跨启动保留。</p>
+<ul>
+<li>最高分、简单设置：可以从 <code>ConfigFile</code> 或少量 JSON
+数据开始。</li>
+<li>复杂游戏状态：需要设计对象识别、序列化、加载顺序和旧状态清理。</li>
+<li>JSON 便于阅读和调试，但不能直接表达所有 Godot 类型，例如 Vector2
+需要拆分或转换。</li>
+<li>读取存档要处理文件不存在、解析失败和数据类型不符合预期的情况。</li>
+</ul>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html">Saving
+games</a></p>
+<h2 id="6-导出验证编辑器之外的产品">6. 导出：验证编辑器之外的产品</h2>
+<p>导出不是简单复制项目目录。根据目标平台阅读对应指南，准备与编辑器版本匹配的导出模板和平台工具，然后检查导出包中的资源、输入、窗口尺寸和存档路径。</p>
+<p>先在当前桌面平台完成一个可运行导出，再考虑 Web
+或移动端；不同平台有各自限制和签名要求。</p>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/tutorials/export/index.html">Export</a></p>
+<h2 id="7-3d复用已知模式学习新增维度">7.
+3D：复用已知模式，学习新增维度</h2>
+<p>官方 <strong>Squash the Creeps</strong> 与 2D
+躲避游戏有相似结构，但新增：</p>
+<ul>
+<li>三维坐标与跳跃。</li>
+<li>使用角色物理体移动并检测碰撞。</li>
+<li>物理层和分组识别不同对象。</li>
+<li>按时间间隔实例化怪物。</li>
+<li>移动动画及运行时速度调整。</li>
+<li>在 3D 游戏上绘制 UI。</li>
+</ul>
+<p>建议先完成 2D 主线，再按“游戏区域 → 玩家 → 怪物 → 跳跃/踩踏 →
+失败/重开 → 动画”的顺序推进。不要只把 2D 节点名批量替换成 3D
+节点名，要重新理解坐标、重力和碰撞。</p>
+<p>官方来源：<a
+href="https://docs.godotengine.org/en/stable/getting_started/first_3d_game/index.html">Your
+first 3D game</a></p>
+<h2 id="8-后续查阅方法">8. 后续查阅方法</h2>
+<ol type="1">
+<li>先用教程理解一个完整使用场景。</li>
+<li>在代码编辑器中对内置属性或函数使用 Ctrl + Click（macOS 为 Cmd +
+Click）打开对应文档。</li>
+<li>阅读类说明、继承关系、方法参数和信号，而不只复制示例。</li>
+<li>确认文档版本与项目版本一致。</li>
+<li>每次只增加一个小功能，并重新验证原有游戏闭环。</li>
+</ol>
+<h2 id="小结">小结</h2>
+<p>进阶不是收集更多
+API，而是在已有项目中解决一个明确问题：更可信的碰撞、更灵活的
+UI、更好的反馈、可恢复的数据或可发布的构建。</p>
+<h2 id="下一步">下一步</h2>
+<ul>
+<li>对应练习：<a href="../exercises/04-扩展挑战.html">扩展挑战</a></li>
+<li>返回：<a href="../index.html">学习路线与资料索引</a></li>
+</ul>
+</main>
+</body>
+</html>

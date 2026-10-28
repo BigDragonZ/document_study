@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101d2b">
+  <meta name="description" content="汇总 OpenAI 官方 Quickstart、Use ChatGPT、Get started with Work、Meet dots 和 Import from another agent 五篇入门文档。">
+  <title>官方入门文档学习笔记 — Codex 实战手册</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="course.css">
+</head>
+<body class="course-page">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Codex 实战手册首页"><span class="brand-mark">C</span><span>Codex <b>实战手册</b></span></a>
+    <nav aria-label="主导航"><a class="current-page" href="quickstart.html" aria-current="page">Get started</a><a href="foundations.html">Foundations</a><a href="configuration.html">Configuration</a><a href="developers-guide.html">Developers</a><a href="security-guide.html">Security</a><a href="workflows-guide.html">Workflows</a><a href="index.html#path">学习路线</a><a href="index.html#about">关于项目</a></nav>
+    <a class="top-cta" href="index.html">返回首页 <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="course-hero">
+      <div class="course-hero-copy">
+        <p class="kicker"><span class="live-dot"></span> 官方文档学习笔记 · Get started</p>
+        <h1>先选对入口，<br>再开始协作。</h1>
+        <p class="course-hero-lede">把官方五篇入门内容放在一起看：了解 Chat、Work、Codex 与 dot 的选择方式，掌握委派任务、持续跟进和导入已有 agent 设置的方法。</p>
+        <div class="course-meta"><span>内容依据：OpenAI 官方文档</span><span>核对日期：2026-10-20</span></div>
+      </div>
+      <div class="quickstart-map" aria-label="官方 Quickstart 的主要步骤">
+        <div class="map-step"><span>使用入口</span><strong>选择桌面端或网页</strong><small>开发者也可选择 CLI / IDE</small></div>
+        <i aria-hidden="true">↓</i>
+        <div class="map-step"><span>设置</span><strong>登录并选择工作位置</strong><small>开始对话、创建项目或打开文件夹</small></div>
+        <i aria-hidden="true">↓</i>
+        <div class="map-step"><span>开始聊天</span><strong>按任务选择工作模式</strong><small>ChatGPT Work / Codex / ChatGPT Chat</small></div>
+        <i aria-hidden="true">↓</i>
+        <div class="map-step map-step-final"><span>首条消息</span><strong>描述目标并补充上下文</strong><small>可附加任务需要的文件</small></div>
+      </div>
+    </section>
+
+    <div class="course-shell">
+      <aside class="course-rail" aria-label="本课目录">
+        <span>官方章节</span>
+        <a href="#choose">Where to use ChatGPT</a>
+        <a href="#workspace">Setup</a>
+        <a href="#start-chat">Start a chat</a>
+        <a href="#first-message">Send your first message</a>
+        <a href="#next-steps">Next steps</a>
+        <a href="#use-chatgpt">Use ChatGPT</a>
+        <a href="#work-overview">Get started with Work</a>
+        <a href="#meet-dots">Meet dots</a>
+        <a href="#import-setup">Import from another agent</a>
+      </aside>
+
+      <article class="course-content">
+        <section class="course-block" id="choose">
+          <p class="section-label">Where to use ChatGPT</p>
+          <h2>官方列出了哪些使用入口？</h2>
+          <p>Quickstart 介绍 ChatGPT 桌面应用与网页入口，并简述开发者可选的 Codex 使用方式。页面将桌面应用标为适合项目、本地文件和长时间任务的推荐入口；网页入口无需安装，适合在云端处理复杂任务。</p>
+          <div class="entry-list">
+            <div><span class="entry-mark">桌面应用 · 推荐</span><p>用于跨项目、本地文件和长时间任务。</p></div>
+            <div><span class="entry-mark">网页</span><p>无需安装；可在云端连续处理复杂任务。</p></div>
+            <div><span class="entry-mark">开发者入口</span><p>在终端或代码编辑器中使用 Codex；远程编码可创建 Codex Cloud 环境。</p></div>
+          </div>
+          <div class="learning-note"><b>本节要点</b><p>官方文档按任务场景区分入口：本地项目和文件侧重桌面应用；网页适合免安装的云端工作；开发者可继续查看 CLI、IDE 扩展或 Cloud 的专门说明。</p></div>
+        </section>
+
+        <section class="course-block" id="workspace">
+          <p class="section-label">Setup</p>
+          <h2>桌面端和网页端的设置步骤。</h2>
+          <p>官方 Quickstart 分别列出桌面端与网页端的开始方式。桌面端的流程还包括选择要让 ChatGPT 工作的位置，并在软件开发任务中切换到 Codex。</p>
+          <ol class="setup-list">
+            <li><span>1</span><div><b>桌面端：安装并登录</b><p>下载 macOS、Windows 或 Linux 对应的 ChatGPT 桌面应用，打开后使用 ChatGPT 账号登录。</p></div></li>
+            <li><span>2</span><div><b>桌面端：选择工作位置</b><p>开始聊天、创建项目或打开文件夹。官方说明：ChatGPT 可以读取和修改所选文件夹中的文件。</p></div></li>
+            <li><span>3</span><div><b>桌面端：开始聊天</b><p>按任务类型选择 ChatGPT Work、Codex 或 ChatGPT Chat；官方给出的对应场景见下一节。</p></div></li>
+            <li><span>4</span><div><b>网页端：登录并开始</b><p>打开 ChatGPT 网页并登录；选择 Chat 进行对话，选择 Work 进行研究、分析和制作交付物，然后开始聊天或选择项目。</p></div></li>
+          </ol>
+          <p class="source-caveat">官方页面注明，也可以使用 API key，但部分功能可能不可用。</p>
+        </section>
+
+        <section class="course-block" id="start-chat">
+          <p class="section-label">Start a chat</p>
+          <h2>按任务场景选择 ChatGPT Work、Codex 或 ChatGPT Chat。</h2>
+          <p>Quickstart 在桌面端的“Start a chat”步骤中区分了三种入口。判断依据是当前任务属于交付型工作、软件开发，还是轻量对话。</p>
+          <div class="entry-list chat-mode-list">
+            <div><span class="entry-mark">ChatGPT Work</span><p>用于研究、分析，或制作文档、演示文稿、电子表格、Sites 等交付物。桌面端从 ChatGPT 进入，再在新聊天页上方切换到 Work。</p></div>
+            <div><span class="entry-mark">Codex</span><p>用于需要代码库上下文和开发工具的软件开发任务。在 ChatGPT 下拉菜单中选择 Codex。</p></div>
+            <div><span class="entry-mark">ChatGPT Chat</span><p>用于快速问题、探索想法或围绕主题进行对话。桌面端从 ChatGPT 进入，再在新聊天页上方切换到 Chat。</p></div>
+          </div>
+          <div class="learning-note"><b>官方补充</b><p>在 Codex 中也可以发起普通快速聊天：将指针移到 New chat 旁，选择右侧的 Quick chat 图标。网页端的 Quickstart 则将 Chat 描述为问答、探索想法和对话，将 Work 描述为研究、分析和制作成果。</p></div>
+        </section>
+
+        <section class="course-block" id="first-message">
+          <p class="section-label">Send your first message</p>
+          <h2>描述目标，并提供需要的文件或上下文。</h2>
+          <p>官方 Quickstart 对首条消息的说明是：描述你的目标，并添加 ChatGPT 需要的文件或上下文。页面给出的示例入口包括准备决策、分析电子表格和改进应用。</p>
+          <div class="entry-list message-examples">
+            <div><span class="entry-mark">Prepare a decision</span><p>准备一项决策。</p></div>
+            <div><span class="entry-mark">Analyze spreadsheets</span><p>分析电子表格。</p></div>
+            <div><span class="entry-mark">Improve this app</span><p>改进这个应用。</p></div>
+          </div>
+          <div class="learning-note"><b>我的理解</b><p>首条消息提供任务目标；文件和上下文为任务补足材料。官方 Quickstart 在此处给出的是示例任务入口，并没有规定统一的提示词模板。</p></div>
+        </section>
+
+        <section class="course-block" id="next-steps">
+          <p class="section-label">Next steps</p>
+          <h2>官方建议接着了解什么？</h2>
+          <p>Quickstart 的结尾列出两项后续内容：了解桌面应用如何配合本地项目工作，以及如何导入已有设置、项目和近期工作。</p>
+          <div class="course-next official-next">
+            <a href="https://learn.chatgpt.com/docs/app" target="_blank" rel="noreferrer"><span>官方后续阅读</span><b>Learn more about the ChatGPT desktop app ↗</b></a>
+            <a href="https://learn.chatgpt.com/docs/import" target="_blank" rel="noreferrer"><span>官方后续阅读</span><b>Import your setup ↗</b></a>
+          </div>
+        </section>
+
+        <section class="course-block" id="use-chatgpt">
+          <p class="section-label">Use ChatGPT</p>
+          <h2>从一个问题开始，补充上下文，再逐步完善结果。</h2>
+          <p>官方页面把使用过程概括为自然语言协作：从问题、想法、粗略笔记、文件或待办任务开始；让 ChatGPT 解释、构思、起草、研究、分析或创作；提供所需上下文和工具；检查结果并继续校准。</p>
+          <ol class="setup-list">
+            <li><span>1</span><div><b>提出一个起点</b><p>可以是问题、想法、初步笔记、文件，或需要完成的任务。</p></div></li>
+            <li><span>2</span><div><b>说明希望它做什么</b><p>例如解释信息、发展想法、起草内容、研究主题、分析材料或创作新内容。</p></div></li>
+            <li><span>3</span><div><b>补充相关上下文与工具</b><p>可加入文件、网页搜索、项目或插件等任务需要的材料和能力。</p></div></li>
+            <li><span>4</span><div><b>审阅并继续调整</b><p>查看结果、纠正方向并要求修改；官方说明，不需要一开始就写出完美提示词，也不需要特殊命令。</p></div></li>
+          </ol>
+          <div class="learning-note"><b>入口选择</b><p>Chat 适合问答、搜索、头脑风暴、草拟或比较；Work 适合有明确结果、需要可审阅交付物的任务；Codex 适合开发工具和技术细节，尤其是软件开发。</p></div>
+        </section>
+
+        <section class="course-block" id="work-overview">
+          <p class="section-label">Get started with Work</p>
+          <h2>把有明确结果的较大任务交给 Work。</h2>
+          <p>官方将 ChatGPT Work 描述为委派实际工作的方式：它可以利用文件、插件和获准使用的工具收集信息、生成成品文件、运行工作流，并把结果留给用户审阅。过程中可以查看进展、回答问题、调整方向，并批准重要操作。</p>
+          <div class="entry-list work-examples">
+            <div><span class="entry-mark">制作演示文稿</span><p>把笔记、文档、研究或会议材料整理成结构化演示文稿。</p></div>
+            <div><span class="entry-mark">研究与分析</span><p>查阅来源或文件、比较信息，再形成可供审阅的分析结果。</p></div>
+            <div><span class="entry-mark">完成可交付任务</span><p>准备简报、计划、周期性更新、工作流或其他完成后的文件。</p></div>
+          </div>
+          <ol class="setup-list">
+            <li><span>1</span><div><b>切换到 Work</b><p>然后选择要完成的任务。</p></div></li>
+            <li><span>2</span><div><b>给出清晰结果、少量来源材料和可审阅的产物</b><p>这是官方列出的适合尝试的任务特征。</p></div></li>
+            <li><span>3</span><div><b>跟进执行过程并审阅结果</b><p>可以回答过程中出现的问题、改变方向，并在重要操作前作出批准。</p></div></li>
+          </ol>
+          <p class="source-caveat">桌面应用中的 Work 在功能可用时也能使用本地文件、应用和浏览器。官方页面还区分本地与云端工作环境；具体能力取决于可用功能和工作区设置。</p>
+        </section>
+
+        <section class="course-block" id="meet-dots">
+          <p class="section-label">Meet dots</p>
+          <h2>让 dot 持续跟进跨对话的责任与变化。</h2>
+          <p>官方将 dot 描述为常驻云端的 agent：它可以在对话之间持续推进工作，利用相关对话、偏好和保存的笔记跟踪进展，并在需要用户判断时带回结果或提出问题。它适合需要持续留意、随变化更新并主动跟进的责任。</p>
+          <div class="entry-list work-examples">
+            <div><span class="entry-mark">持续跟进</span><p>例如跟踪活动筹备中的决定、截止日期和待回复事项，并在预算或期限出现风险时提醒。</p></div>
+            <div><span class="entry-mark">连接工作渠道</span><p>可在 ChatGPT、Slack 或 Teams 与同一个 dot 对话；连接渠道本身不会自动开放邮箱、本地电脑或其他应用。</p></div>
+            <div><span class="entry-mark">协作完成任务</span><p>dot 可把需要交付的工作委派给 ChatGPT Work 或 Codex，再持续跟进进度。</p></div>
+          </div>
+          <div class="learning-note"><b>与其他入口的区别</b><p>Chat 用于即时问答和构思；Work 用于委派研究、分析或文件制作；Codex 用于软件开发；dot 则负责持续跟踪一项责任，在变化时推进并跟进。登录、连接电脑或应用时仍受各自权限与确认机制约束。</p></div>
+          <p class="source-caveat">官方说明 dots 正分批开放，是否可用取决于账号、地区和工作区条件；可用性以当前官方页面与账户界面为准。</p>
+        </section>
+
+        <section class="course-block" id="import-setup">
+          <p class="section-label">Import from another agent</p>
+          <h2>把受支持的设置和近期工作带入 ChatGPT 或 Codex。</h2>
+          <p>官方导入流程可以迁移指令、设置、Skills、Plugins、项目和近期工作。桌面应用支持从 Claude Code、Claude Cowork 或 Cursor 导入；Codex CLI 支持从 Claude Code 或 Cursor 导入。</p>
+          <div class="learning-note"><b>导入边界</b><p>官方说明导入不会更改或删除原有 agent 设置。导入后，部分插件或连接仍可能需要授权和后续配置；迁移内容应在依赖它们之前检查。</p></div>
+          <ol class="setup-list">
+            <li><span>1</span><div><b>桌面应用中导入</b><p>打开 Settings → Import；若没有 Import 栏目，则到 General 找到 Import other agent setup。</p></div></li>
+            <li><span>2</span><div><b>选择来源和要迁移的项目</b><p>选择 agent，再选择要导入的设置、项目文件和近期聊天，完成后打开导入的项目或聊天继续工作。</p></div></li>
+            <li><span>3</span><div><b>完成尚未配置的连接</b><p>如果插件或连接需要授权，按状态提示完成登录或配置；也可以在设置中开启自动更新，让导入内容与原 agent 保持同步。</p></div></li>
+            <li><span>4</span><div><b>Codex CLI 中导入</b><p>启动本地 Codex CLI，输入 <code>/import</code>，选择 Claude Code 或 Cursor，再选择要导入的设置、项目文件和近期聊天。</p></div></li>
+          </ol>
+          <p class="source-caveat">Codex CLI 的导入范围和使用限制以官方文档为准；文档目前说明最多导入最近 30 天内的 50 个聊天，且运行任务期间、远程会话中或连接本地 app-server daemon 时不可使用 `/import`。</p>
+        </section>
+
+        <section class="source-card" aria-label="官方来源">
+          <div><p class="section-label">五页官方来源</p><h2>以官方文档为准</h2><p>本页合并 Quickstart、Use ChatGPT、Get started with Work、Meet dots 和 Import from another agent 的要点。以下链接用于核对原文。</p></div>
+          <div class="source-links">
+            <a href="https://developers.openai.com/codex/quickstart" target="_blank" rel="noreferrer">Quickstart ↗</a>
+            <a href="https://learn.chatgpt.com/docs/use-chatgpt" target="_blank" rel="noreferrer">Use ChatGPT ↗</a>
+            <a href="https://learn.chatgpt.com/docs/get-started-with-work" target="_blank" rel="noreferrer">Get started with Work ↗</a>
+            <a href="https://learn.chatgpt.com/docs/dots" target="_blank" rel="noreferrer">Meet dots ↗</a>
+            <a href="https://learn.chatgpt.com/docs/import" target="_blank" rel="noreferrer">Import from another agent ↗</a>
+          </div>
+          <small>核对日期：2026-10-20</small>
+        </section>
+
+        <nav class="course-next" aria-label="页面导航"><a href="index.html#path"><span>手册首页</span><b>查看全部学习内容 ↗</b></a><a href="foundations.html"><span>下一部分</span><b>Foundations · 实际使用指南 ↗</b></a></nav>
+      </article>
+    </div>
+  </main>
+
+  <footer><a class="brand footer-brand" href="index.html"><span class="brand-mark">C</span><span>Codex <b>实战手册</b></span></a><span>从第一次提问，到独立交付。</span><a href="#main">回到顶部 ↑</a></footer>
+  <script src="script.js"></script>
+</body>
+</html>

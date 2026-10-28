@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>练习 03：完整躲避游戏</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：练习 03：完整躲避游戏">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="练习-03完整躲避游戏">练习 03：完整躲避游戏</h1>
+<h2 id="前置知识与准备">前置知识与准备</h2>
+<ul>
+<li>已完成<a href="02-脚本输入与信号.html">练习 02</a>。</li>
+<li>已读：<a href="../notes/05-完整2D游戏.html">完整 2D
+游戏笔记</a>。</li>
+<li>从官方 <a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html">Your
+first 2D game</a> 页面下载
+<code>dodge_the_creeps_2d_assets.zip</code>。</li>
+<li>新建项目并按官方说明导入素材。不要用同名旧教程的 Godot 3.x
+代码替代。</li>
+</ul>
+<h2 id="目标">目标</h2>
+<p>完成 Dodge the Creeps 的最小完整闭环：</p>
+<pre class="text"><code>标题界面 → 开始 → 移动/生成敌人/计分 → 受击结束 → 重开</code></pre>
+<p>每个部分先独立验收，再连接下一部分。</p>
+<h2 id="第一部分player-场景">第一部分：Player 场景</h2>
+<ol type="1">
+<li>创建 <code>player.tscn</code>，根节点为 <code>Area2D</code>，命名
+<code>Player</code>。</li>
+<li>添加 <code>AnimatedSprite2D</code> 和
+<code>CollisionShape2D</code>。</li>
+<li>使用官方素材配置 <code>walk</code>、<code>up</code>
+动画，并设置合适的碰撞形状。</li>
+<li>添加脚本，声明
+<code>@export var speed</code>、<code>screen_size</code> 和自定义
+<code>signal hit</code>。</li>
+<li>在 Input Map 添加
+<code>move_right</code>、<code>move_left</code>、<code>move_up</code>、<code>move_down</code>，绑定四个方向键。</li>
+<li>每帧收集方向，非零时归一化并乘速度；播放或停止动画。</li>
+<li>用 <code>position += velocity * delta</code>
+移动，再将位置限制在视口内。</li>
+<li>根据水平/垂直方向切换动画及翻转属性。</li>
+<li>连接 <code>body_entered</code>：隐藏玩家、发出 <code>hit</code>，用
+<code>set_deferred()</code> 禁用碰撞。</li>
+<li>编写 <code>start(pos)</code>，恢复位置、可见性和碰撞。</li>
+</ol>
+<h3 id="阶段验收">阶段验收</h3>
+<ul>
+<li>单独运行 Player 场景时，四方向移动速度一致，斜向不会更快。</li>
+<li>玩家不能移出视口，动画方向正确。</li>
+<li><code>_ready()</code> 中的初始隐藏不会妨碍用测试代码调用
+<code>start()</code>。</li>
+<li>受击回调只负责玩家自身状态和发出 <code>hit</code>，没有操作 HUD
+或分数。</li>
+</ul>
+<p>官方对照：<a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/03.coding_the_player.html">Coding
+the player</a></p>
+<h2 id="第二部分mob-场景">第二部分：Mob 场景</h2>
+<ol type="1">
+<li>创建 <code>mob.tscn</code>，根节点为 <code>RigidBody2D</code>，命名
+<code>Mob</code>。</li>
+<li>添加
+<code>AnimatedSprite2D</code>、<code>CollisionShape2D</code>、<code>VisibleOnScreenNotifier2D</code>。</li>
+<li>将 Gravity Scale 设为 0，按官方说明设置 Collision
+Mask，避免敌人彼此碰撞。</li>
+<li>配置 <code>fly</code>、<code>swim</code>、<code>walk</code>
+三种动画和碰撞形状。</li>
+<li>在 <code>_ready()</code> 中随机动画并播放。</li>
+<li>连接 <code>screen_exited</code>，让 Mob 调用
+<code>queue_free()</code>。</li>
+<li>把 Mob 根节点加入 <code>mobs</code> 组，供重开时统一清理。</li>
+</ol>
+<h3 id="阶段验收-1">阶段验收</h3>
+<ul>
+<li>多次实例化 Mob 时，外观可随机变化，实例互不影响。</li>
+<li>Mob 不受重力下落，离屏后会删除自己。</li>
+<li>所有 Mob 实例都属于 <code>mobs</code> 组。</li>
+</ul>
+<p>官方对照：<a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/04.creating_the_enemy.html">Creating
+the enemy</a></p>
+<h2 id="第三部分main-场景与生成流程">第三部分：Main 场景与生成流程</h2>
+<ol type="1">
+<li>创建 <code>main.tscn</code>，根节点使用 <code>Node</code>，命名
+<code>Main</code>。</li>
+<li>实例化 Player，添加 <code>StartPosition</code>（Marker2D）。</li>
+<li>添加三个 Timer：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>Wait Time</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MobTimer</code></td>
+<td>0.5 秒</td>
+<td>生成敌人</td>
+</tr>
+<tr>
+<td><code>ScoreTimer</code></td>
+<td>1 秒</td>
+<td>分数加一</td>
+</tr>
+<tr>
+<td><code>StartTimer</code></td>
+<td>2 秒，One Shot</td>
+<td>开局准备</td>
+</tr>
+</tbody>
+</table>
+<ol start="4" type="1">
+<li>添加 <code>MobPath</code>（Path2D）和子节点
+<code>MobSpawnLocation</code>（PathFollow2D），按官方示意顺时针绘制闭合边缘路径。</li>
+<li>Main 脚本声明 <code>@export var mob_scene: PackedScene</code> 和
+<code>score</code>，在 Inspector 赋值 <code>mob.tscn</code>。</li>
+<li>把 Player 的 <code>hit</code> 连接到 <code>game_over()</code>：停止
+ScoreTimer 和 MobTimer。</li>
+<li>编写 <code>new_game()</code>：分数归零、清理 <code>mobs</code>
+组、重置玩家、启动 StartTimer。</li>
+<li>连接 StartTimer：超时后启动 MobTimer 和 ScoreTimer。</li>
+<li>连接 ScoreTimer：每次超时 <code>score += 1</code>。</li>
+<li>连接 MobTimer：实例化 Mob，随机 PathFollow2D
+进度，设置位置、方向和速度，最后 <code>add_child(mob)</code>。</li>
+<li>暂时在 <code>_ready()</code> 调用 <code>new_game()</code>，并把 Main
+设为主场景进行测试。</li>
+</ol>
+<h3 id="阶段验收-2">阶段验收</h3>
+<ul>
+<li>敌人从屏幕边缘随机位置生成，主要朝游戏区域内部运动。</li>
+<li>分数每秒增加，受击后敌人生成和计分都停止。</li>
+<li>再次调用 <code>new_game()</code>
+后，旧敌人被清理，玩家恢复，分数从零开始。</li>
+<li><code>mob_scene</code> 未赋值、忘记 <code>add_child()</code>
+等错误均已排除。</li>
+</ul>
+<p>官方对照：<a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/05.the_main_game_scene.html">The
+main game scene</a></p>
+<h2 id="第四部分hud-与完整闭环">第四部分：HUD 与完整闭环</h2>
+<ol type="1">
+<li>创建 <code>hud.tscn</code>，根节点为 <code>CanvasLayer</code>，命名
+<code>HUD</code>。</li>
+<li>添加
+<code>ScoreLabel</code>、<code>Message</code>、<code>StartButton</code>
+和 <code>MessageTimer</code>。</li>
+<li>使用官方字体、Anchors 和 Anchor Presets 完成布局；MessageTimer 设为
+2 秒 One Shot。</li>
+<li>HUD 脚本声明 <code>signal start_game</code>。</li>
+<li>实现 <code>update_score()</code>、<code>show_message()</code> 和
+<code>show_game_over()</code>。</li>
+<li>连接 StartButton：隐藏按钮并发出 <code>start_game</code>。</li>
+<li>连接 MessageTimer：超时隐藏临时消息。</li>
+<li>把 HUD 实例加入 Main，将 <code>start_game</code> 连接到
+<code>new_game()</code>。</li>
+<li>在 <code>new_game()</code> 更新分数并显示准备消息；在
+<code>game_over()</code> 调用 HUD 的结束显示。</li>
+<li>每次 ScoreTimer 超时同步更新 HUD。</li>
+<li><strong>删除 <code>_ready()</code> 中用于测试的
+<code>new_game()</code></strong>，让标题界面等待玩家点击 Start。</li>
+</ol>
+<h3 id="阶段验收-3">阶段验收</h3>
+<ul>
+<li>启动项目先看到标题和 Start，不会自动计分。</li>
+<li>点击 Start 后出现准备消息，随后生成敌人并开始计分。</li>
+<li>受击后显示 Game Over，之后可以再次开始。</li>
+<li>连续重开三次，每次都满足：分数归零、旧敌人清理、玩家可操作、Timer
+不错误叠加。</li>
+<li>调整窗口大小时，HUD 仍位于预期锚点区域。</li>
+</ul>
+<p>官方对照：<a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/06.heads_up_display.html">Heads
+up display</a></p>
+<h2 id="常见错误">常见错误</h2>
+<ul>
+<li><strong>斜向速度异常。</strong> 输入向量先归一化，再乘 speed。</li>
+<li><strong>碰撞后出现重复 hit 或物理错误。</strong>
+延迟禁用碰撞，并在重开时恢复。</li>
+<li><strong>敌人不生成。</strong> 检查 MobTimer 是否由 StartTimer
+启动、Mob Scene 是否赋值、实例是否加入场景树。</li>
+<li><strong>敌人全部朝外。</strong> 按官方方向重新检查 Path2D
+的绘制顺序和方向计算。</li>
+<li><strong>游戏结束仍加分。</strong> <code>game_over()</code> 必须停止
+ScoreTimer 和 MobTimer。</li>
+<li><strong>绕过标题直接开始。</strong> 删除 <code>_ready()</code>
+中残留的测试调用。</li>
+<li><strong>节点路径报错。</strong> <code>$Name</code>
+区分大小写，且必须与当前脚本节点的相对路径一致。</li>
+</ul>
+<h2 id="拓展挑战选做">拓展挑战（选做）</h2>
+<p>不增加新系统，只做平衡调整：让 MobTimer
+的间隔或敌人速度随分数逐步变化，并设置合理下限/上限。</p>
+<p>验收：开局仍有反应时间，后期难度可感知提高，参数不会变成零或负数。</p>
+<h2 id="完成标准">完成标准</h2>
+<p>关闭本练习，仅根据场景职责图重新说明开始、计分、受击和重开的信号流；然后实际运行一次完整闭环，Debugger
+无脚本错误。</p>
+<h2 id="官方来源">官方来源</h2>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html">Your
+first 2D game 与素材</a></li>
+<li>各部分官方对照链接见上文。</li>
+</ul>
+<p>下一阶段：<a href="04-扩展挑战.html">扩展挑战</a></p>
+</main>
+</body>
+</html>

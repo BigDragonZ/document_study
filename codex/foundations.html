@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101d2b">
+  <meta name="description" content="基于 OpenAI 官方 Foundations 五篇文档，学习提示方式、模型选择、个性化、Skills 与 Plugins，以及权限模式。">
+  <title>Foundations · 官方基础使用指南 — Codex 实战手册</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="course.css">
+  <style>
+    .foundation-table{width:100%;border-collapse:collapse;margin:20px 0 5px;font-size:10px;line-height:1.8}
+    .foundation-table th,.foundation-table td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #d9ded8}
+    .foundation-table th{color:#40564d;background:#e4efe9;font-size:9px}
+    .foundation-table td:first-child{font-weight:700;color:#263e38;white-space:nowrap}
+    .prompt-example{margin-top:18px;padding:17px 19px;background:#f0f1ec;color:#40514e;font-size:10px;line-height:1.9;white-space:pre-line}
+    .prompt-example b{display:block;margin-bottom:6px;color:#c9502f;font-size:9px}
+    .model-name{font-size:10px;font-weight:700;color:#263e38}
+    @media(max-width:560px){.foundation-table{display:block;overflow-x:auto;white-space:normal}.foundation-table td:first-child{white-space:normal}.prompt-example{padding:14px}}
+  </style>
+</head>
+<body class="course-page">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Codex 实战手册首页"><span class="brand-mark">C</span><span>Codex <b>实战手册</b></span></a>
+    <nav aria-label="主导航"><a href="quickstart.html">Get started</a><a class="current-page" href="foundations.html" aria-current="page">Foundations</a><a href="configuration.html">Configuration</a><a href="developers-guide.html">Developers</a><a href="security-guide.html">Security</a><a href="workflows-guide.html">Workflows</a><a href="index.html#path">学习路线</a><a href="index.html#about">关于项目</a></nav>
+    <a class="top-cta" href="index.html">返回首页 <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="course-hero">
+      <div class="course-hero-copy">
+        <p class="kicker"><span class="live-dot"></span> 官方文档学习笔记 · Foundations</p>
+        <h1>把 Codex 用好，<br>从五个基础习惯开始。</h1>
+        <p class="course-hero-lede">这五篇 Foundations 文档讲的是实际使用方法：怎样描述任务、挑选模型、保存偏好、复用工作流，以及为本地操作设定权限边界。</p>
+        <div class="course-meta"><span>内容依据：OpenAI 官方文档</span><span>核对日期：2026-10-22</span></div>
+      </div>
+      <div class="quickstart-map" aria-label="Foundations 五个基础主题">
+        <div class="map-step"><span>任务</span><strong>说清目标与上下文</strong><small>Prompting</small></div>
+        <i aria-hidden="true">↓</i>
+        <div class="map-step"><span>配置</span><strong>选模型并保存长期偏好</strong><small>Model selection / Personalize</small></div>
+        <i aria-hidden="true">↓</i>
+        <div class="map-step"><span>复用</span><strong>把流程与工具沉淀下来</strong><small>Skills &amp; Plugins</small></div>
+        <i aria-hidden="true">↓</i>
+        <div class="map-step map-step-final"><span>边界</span><strong>设定本地操作与审批范围</strong><small>Permissions</small></div>
+      </div>
+    </section>
+
+    <div class="course-shell">
+      <aside class="course-rail" aria-label="Foundations 目录">
+        <span>官方章节</span>
+        <a href="#prompting">Prompting</a>
+        <a href="#models">Model selection</a>
+        <a href="#personalize">Personalize ChatGPT</a>
+        <a href="#skills">Skills &amp; Plugins</a>
+        <a href="#permissions">Permissions</a>
+      </aside>
+
+      <article class="course-content">
+        <section class="course-block" id="prompting">
+          <p class="section-label">01 · Prompting</p>
+          <h2>先说想要的结果，再补足会改变结果的信息。</h2>
+          <p>官方把提示词解释为向 ChatGPT 说明你想了解、制作或修改什么。它可以是问题、指令或目标；用自然语言开始即可，不需要技术语法或固定模板。先看回复，再用后续消息调整，通常比一次写出很长的步骤清单更实用。</p>
+          <table class="foundation-table" aria-label="提示任务时可提供的四类信息">
+            <thead><tr><th>信息</th><th>需要说明什么</th><th>官方页面给出的作用</th></tr></thead>
+            <tbody>
+              <tr><td>Goal · 目标</td><td>希望 ChatGPT 做什么、完成后要有什么结果。</td><td>先描述结果；只有当过程本身重要时才规定步骤。</td></tr>
+              <tr><td>Context · 上下文</td><td>哪些信息、文件、来源会改变结果。</td><td>只加入相关材料，并说明每个来源要用来做什么。</td></tr>
+              <tr><td>Output · 产物</td><td>读者、格式、长度、组织方式或细节程度。</td><td>说明你准备怎样使用结果，便于调整结构和深度。</td></tr>
+              <tr><td>Boundaries · 边界</td><td>必须保持不变的内容、应避免的操作、需先询问的动作。</td><td>只强调最重要的一两条边界，不必控制每个执行步骤。</td></tr>
+            </tbody>
+          </table>
+          <div class="entry-list">
+            <div><span class="entry-mark">补充上下文</span><p>可附上文档、表格、演示文稿、PDF；依赖视觉信息时加入截图或图示，并指出重点区域。需要最新信息时明确要求网页搜索；需要复用相关聊天、文件或本地文件夹时使用 Project。</p></div>
+            <div><span class="entry-mark">使用已连接来源</span><p>指出应查看哪个连接来源、要找什么即可，无需预先列出每一条搜索语句。连接来源需要对应插件，具体可用性可能受套餐和工作区设置影响。</p></div>
+            <div><span class="entry-mark">让结果可直接使用</span><p>说清读者和使用场景，例如一页简报、带负责人和截止日期的邮件，或突出预算差异的表格。重要任务可要求检查完整性、指出无法核实的信息；使用或分享前仍要自己审阅。</p></div>
+          </div>
+          <div class="learning-note"><b>边界示例</b><p>官方例子包括：保持已批准日期和预算不变；只使用提供的来源、缺信息时标出而不是猜测；建议不能超出预算；把消息写成草稿，不要发送。边界的作用是防止关键错误或未经预期的外部影响。</p></div>
+          <h3 class="section-label" style="margin-top:26px">根据任务选入口</h3>
+          <table class="foundation-table" aria-label="Chat、Work 与 Codex 的提示场景">
+            <thead><tr><th>入口</th><th>适合的任务</th><th>描述任务时的重点</th></tr></thead>
+            <tbody>
+              <tr><td>Chat</td><td>问答、理解主题、头脑风暴、草拟和日常选择。</td><td>说明想要的答案或文本；只有会影响答案的细节才需要补充。</td></tr>
+              <tr><td>ChatGPT Work</td><td>跨来源或工具的多步骤工作、修改或较大的可审阅交付物。</td><td>说明结果、来源材料、读者、文件格式和审阅方式。需要时让它先计划、收集信息、制作文件并自查。</td></tr>
+              <tr><td>Codex</td><td>代码库、代码和开发工具相关工作。</td><td>说明目标行为、相关代码位置或复现步骤、不可变更的约束，以及怎样验证改动。</td></tr>
+            </tbody>
+          </table>
+          <div class="setup-list">
+            <div><b>修复可复现问题</b><p>给出重现步骤和怀疑文件；写明接口等约束，要求先复现，再提出最小修复；在可行时加回归测试，修复后重新跑复现步骤和相关检查。</p></div>
+            <div><b>理解代码库</b><p>打开或选中相关文件，询问模块职责、数据在哪里验证、修改时有哪些注意点；再要求用步骤或文件清单总结调用流程，方便核对。</p></div>
+            <div><b>计划较大的改造</b><p>当多步骤任务的实施路径需要先确认时，用 <code>/plan</code> 让 Codex 调查并提出方案；审阅后再继续。Goal mode 可用时，可在计划后用 <code>/goal</code> 持续追踪目标。</p></div>
+            <div><b>验证 Codex 能看到的上下文</b><p>IDE 扩展会自动包含已打开文件；可打开最相关文件，必要时选中重点代码。CLI 中通过 <code>@</code> 路径补全或 <code>/mention</code> 附加文件。截图能提供视觉要求，但截图没展示的交互、校验等行为仍需用文字说明。</p></div>
+          </div>
+          <div class="learning-note"><b>处理中途调整</b><p>首条提示不用完美。可以补来源、纠正方向、要求另一个方案或改变细节程度。在 Codex 正在工作时，Steer 会把消息加入当前运行；Queue 会留到当前运行结束后再执行。桌面端可设置默认方式；CLI 中 Enter 用于 steer，Tab 用于 queue。</p></div>
+          <div class="prompt-example"><b>按官方原则整理的 Codex 任务例子</b>设置页点击“保存”后显示成功，但刷新后设置会恢复原值。请先按以下步骤复现，再查明原因并给出最小修复：打开设置页、开启提醒、保存、刷新页面。不要改变 API 形状；如果可行，添加回归测试。修复后重跑复现步骤和相关检查，并报告运行的命令与结果。</div>
+          <div class="prompt-example"><b>按官方 Work 示例整理的交付任务</b>使用附件中的季度报告，为管理团队制作一份简报和一套六页演示文稿。读者是管理团队；先列出需要决策的三件事，区分报告事实与分析判断，每个数字标注来源文件。交付前检查简报与演示文稿中的数字和结论是否一致。</div>
+          <h3 class="section-label" style="margin-top:26px">Codex 常见任务的实际提示方法</h3>
+          <div class="entry-list work-examples">
+            <div><span class="entry-mark">写测试</span><p>IDE 中打开函数文件，选中函数后可从命令面板用 “Add to Codex Thread” 添加代码范围，再要求编写符合现有测试惯例的单元测试。CLI 中明确提到文件与函数，并说明要覆盖正常路径和边缘情况。</p></div>
+            <div><span class="entry-mark">用截图做原型</span><p>把截图作为上下文，同时写明技术栈、实现约束、目标页面和输出文件；截图未呈现的交互、校验或键盘行为要另外说明。可要求启动开发服务器并告诉你预览的本地地址。</p></div>
+            <div><span class="entry-mark">迭代 UI</span><p>按“提出少量改进方向—选一个方向—一次只改聚焦部分—在浏览器查看”的节奏迭代。保留满意的修改、撤销不满意的修改；如果你手动撤销或更改了代码，要告诉 Codex，避免下一轮覆盖你的决定。</p></div>
+            <div><span class="entry-mark">先计划再委派 Cloud</span><p>先让本地 Codex 根据入口文件、模块边界和依赖关系拟定计划。委派长任务前把改动提交或暂存，审阅里程碑、涉及文件和回滚方式，再逐个委派实施并检查 diff。Cloud 任务运行在隔离环境中；执行阶段默认关闭互联网，除非环境中启用。</p></div>
+            <div><span class="entry-mark">审查改动</span><p>本地 CLI 可用 <code>/review</code> 检查工作区，并指定边缘情况或安全问题等关注点；修正后再次审查。GitHub PR 可在仓库启用 Codex Code Review 后发表评论 <code>@codex review</code>，并注明希望关注的风险。</p></div>
+            <div><span class="entry-mark">更新文档</span><p>明确要改的文档文件、内容范围和验证要求，例如核对链接。完成后阅读渲染后的页面，再根据实际效果继续调整。</p></div>
+          </div>
+          <p class="source-caveat" style="margin-top:15px">以上例子来自官方 Prompting 页面展示的 Chat、Work、IDE、CLI 和 Cloud 工作流。不同表面自动提供的上下文不同，提示中应补足 Codex 当前看不到的文件、复现路径或行为要求。</p>
+        </section>
+
+        <section class="course-block" id="models">
+          <p class="section-label">02 · Model selection</p>
+          <h2>从任务难度、时间成本和结果要求来选模型与推理强度。</h2>
+          <p>模型选择页面提供了按工作类型、任务和优先级筛选建议的工具。它强调模型、推理设置和使用限制会因产品与模型版本而异；推荐只是起点，最好用同一组输入做比较，再保留满足质量要求的较轻设置。</p>
+          <table class="foundation-table" aria-label="官方模型选择页面当前列出的模型定位">
+            <thead><tr><th>模型（页面当前列出）</th><th>官方定位</th><th>适用任务示例</th></tr></thead>
+            <tbody>
+              <tr><td><span class="model-name">Astra</span></td><td>最强智能，适合不明确的问题、深入分析和有挑战性的交付物。</td><td>Ambitious 项目、复杂分析、需要广泛上下文与完整结果的任务。</td></tr>
+              <tr><td><span class="model-name">GPT-6.1 Sol</span></td><td>性能与效率兼顾，适合同时需要管理时间和成本的复杂任务。</td><td>复杂技术工作、需要反复修改的协同交付；重视成本的复杂项目可与 Astra 比较。</td></tr>
+              <tr><td><span class="model-name">Luna</span></td><td>高效型，适合范围明确的任务、分流和频繁自动化。</td><td>精细编辑、范围清楚的问题、简单提取；跨应用找信息和在约束下排序。</td></tr>
+            </tbody>
+          </table>
+          <table class="foundation-table" aria-label="官方模型页面列出的模型和推理强度搭配示例">
+            <thead><tr><th>搭配</th><th>官方建议考虑的工作</th></tr></thead>
+            <tbody>
+              <tr><td>Luna · Low</td><td>精细编辑、范围明确的问题、简单数据提取。</td></tr>
+              <tr><td>Luna · Extra high</td><td>跨多个应用查找当前上下文、工作优先级排序、在明确约束下解决问题。</td></tr>
+              <tr><td>GPT-6.1 Sol · Medium</td><td>复杂技术工作、预期会修改的协同交付。</td></tr>
+              <tr><td>GPT-6.1 Sol · Extra high</td><td>精细成品、彼此关联的视觉系统、基于冲突证据作判断。</td></tr>
+              <tr><td>Astra · Low / Medium / Extra high</td><td>从保留事实细节的简练写作，到需要广泛上下文的复杂项目，再到要求严格的深度分析与复杂交付。</td></tr>
+            </tbody>
+          </table>
+          <div class="entry-list">
+            <div><span class="entry-mark">优先质量</span><p>如果无需考虑成本和等待时间，官方建议可默认考虑 Astra。</p></div>
+            <div><span class="entry-mark">优先效率</span><p>频率高的自动化更容易累积使用量；急需结果的任务可能比可过夜运行的任务需要更快设置。</p></div>
+            <div><span class="entry-mark">用同一任务比较</span><p>考虑工作频率、等待时间、结果的使用方式和质量重要程度。尽可能用相同输入比较模型与推理设置，保留达到质量标准的最轻配置。</p></div>
+          </div>
+          <p class="source-caveat">本节模型名称与建议按 2026-10-22 官方页面记录；产品可用性、工具支持、推理选项、使用限制和套餐权限可能随版本变化。API 规格与价格请查看官方模型目录；ChatGPT 计划可用性以当前账户页面为准。</p>
+        </section>
+
+        <section class="course-block" id="personalize">
+          <p class="section-label">03 · Personalize ChatGPT</p>
+          <h2>把长期偏好、项目规则和当前任务信息放在合适的位置。</h2>
+          <p>个性化功能用来让回答风格和工作方式更符合个人偏好。功能是否可用会因网页、桌面应用等表面不同而异，用户可以在设置中管理或关闭相应选项。</p>
+          <div class="entry-list work-examples">
+            <div><span class="entry-mark">风格与语气</span><p>ChatGPT 网页端可在 Settings → Personalization → Base style and tone 选择风格。它改变表达风格与语气，不改变模型能力。</p></div>
+            <div><span class="entry-mark">自定义指令</span><p>适合跨聊天长期生效的个人偏好。Codex 中这些个人指令保存在全局 <code>AGENTS.md</code>；项目或代码库也可以提供自己的指令。</p></div>
+            <div><span class="entry-mark">当前聊天提示</span><p>只对本次工作重要的要求就写在当前提示中。长期偏好适合个性化设置，必须持续遵循的项目指导则应放在 <code>AGENTS.md</code> 或受版本管理的项目文档。</p></div>
+          </div>
+          <div class="entry-list">
+            <div><span class="entry-mark">Work 写作风格</span><p>ChatGPT Work 网页端可参考已连接应用中的个人写作，帮助草拟内容更接近本人风格。要先完成应用连接，再启用 Use writing style；仅连接应用还不算完成设置。关闭路径为 Settings → Personalization → Writing。</p></div>
+            <div><span class="entry-mark">Memories</span><p>可把稳定偏好、重复工作流程、项目惯例等上下文带到未来聊天，减少重复交代。它与必须遵守的项目指导不同，后者应放进项目说明。</p></div>
+            <div><span class="entry-mark">Computer History</span><p>这是 macOS 桌面端可选功能，可把获准应用和网站的活动作为记忆与时间线；不会把截图纳入历史或录音。启用前先检查记录内容；可暂停、排除应用或网站、检查或删除单条记录，以及清空近期或全部历史。</p></div>
+          </div>
+          <div class="learning-note"><b>记忆放置原则</b><p>跨聊天的稳定偏好放个人设置；跨任务必须执行的团队或项目规范放项目指导；仅当前任务的目标、材料和边界放提示词。三者用途不同，不要把“记住偏好”当成可靠执行项目规则的替代品。</p></div>
+        </section>
+
+        <section class="course-block" id="skills">
+          <p class="section-label">04 · Skills &amp; Plugins</p>
+          <h2>重复工作用 Skill 固化流程；需要连接工具时再考虑 Plugin。</h2>
+          <p>Skills 和 Plugins 的目标是让重复工作能够按合适的指引、资料和工具执行，减少每次都重新粘贴提示、模板、要求或流程。它们帮助把稳定做法变成可重复使用的工作方式。</p>
+          <table class="foundation-table" aria-label="Skill 与 Plugin 的区别">
+            <thead><tr><th>项目</th><th>Skill</th><th>Plugin</th></tr></thead>
+            <tbody>
+              <tr><td>核心用途</td><td>针对一项任务或工作流提供可复用的指引。</td><td>可安装和分享的能力包，可把 Skills 与连接服务的工具组合起来。</td></tr>
+              <tr><td>主要内容</td><td>名称与描述、工作步骤、预期结果；可附模板、示例、品牌指南、schema 或工具。</td><td>可包含 Skills、MCP servers 和其他工作流能力；MCP server 提供工具，也可能提供自定义 ChatGPT UI；插件也可以包含 Codex runtime 的 lifecycle hooks。</td></tr>
+              <tr><td>适合场景</td><td>方法本身要稳定，例如每周简报、文档审查、演示文稿制作、团队写作规范。</td><td>想安装现成工作流，或需要把指引与 GitHub、Drive、Slack 等服务连接起来。</td></tr>
+              <tr><td>调用方式</td><td>匹配任务时可自动选择，也可显式调用。ChatGPT 使用 <code>@</code>；Codex 使用 <code>$</code>。</td><td>安装后描述任务，或按当前产品界面显式选择插件和其中的 Skill。</td></tr>
+            </tbody>
+          </table>
+          <ol class="setup-list">
+            <li><span>1</span><div><b>选一个聚焦的重复任务</b><p>记下通常从哪些文件、链接或笔记开始，以及什么样的结果才算完成。</p></div></li>
+            <li><span>2</span><div><b>描述可重复的工作流</b><p>说明目标、步骤、预期格式，以及每次都应包含或避免的内容；有合适模板或示例时一并补充。</p></div></li>
+            <li><span>3</span><div><b>审阅并用真实请求试跑</b><p>检查指令，用一个真实任务验证是否漏步骤或偏离格式，再继续完善。</p></div></li>
+            <li><span>4</span><div><b>启用、复用并按需分享</b><p>启用后让 ChatGPT 或 Codex 在相关任务中使用，也可显式选择；能否分享给队友取决于工作区设置。</p></div></li>
+          </ol>
+          <div class="learning-note"><b>选择口诀</b><p>只需要重复指引，用 Skill；需要安装一整套能力，特别是要连接服务或工具时，考虑 Plugin。ChatGPT 与 Codex 共用一个通用插件目录；可先查找已有工作流，再决定是否值得自己创建。</p></div>
+        </section>
+
+        <section class="course-block" id="permissions">
+          <p class="section-label">05 · Permissions</p>
+          <h2>先理解沙箱和审批，再选择当前聊天的权限模式。</h2>
+          <p>权限模式决定桌面端 ChatGPT 以及 CLI 或 IDE 中 Codex 可以独立完成哪些本地操作，以及哪些操作需要审阅。涉及的操作包括修改文件、运行命令和使用互联网。官方建议大多数工作从 <code>Ask for approval</code> 开始：在当前工作区范围内工作，超出边界时暂停。</p>
+          <table class="foundation-table" aria-label="官方权限模式选项">
+            <thead><tr><th>模式</th><th>大致行为</th><th>选择时应理解的边界</th></tr></thead>
+            <tbody>
+              <tr><td>Ask for approval</td><td>允许在当前工作区范围内工作；需要越过该边界时暂停并请求审批。</td><td>适合作为大多数任务的起始模式；它会对越界访问保留审批。</td></tr>
+              <tr><td>Approve for me</td><td>符合条件的审批请求交给自动审查，不再逐条弹出人工审批提示；只对被识别为可能不安全的操作询问。</td><td>保持与 Ask for approval 相同的 workspace-write 沙箱；改变的是审批请求的审查方式，不会扩大工作区权限。</td></tr>
+              <tr><td>Full access</td><td>对互联网和电脑上的任意文件开放访问。</td><td>范围显著更广。不要把此模式理解成普通工作区权限。</td></tr>
+              <tr><td>Custom (config.toml)</td><td>使用 <code>config.toml</code> 中配置的权限。</td><td>实际行为要结合该配置文件中的 sandbox 和审批设置理解。</td></tr>
+            </tbody>
+          </table>
+          <div class="learning-note"><b>两层控制</b><p>沙箱限定可访问的文件和网络资源；审批规则决定何时暂停等待确认，或把请求交给自动审查。更改审批者不会扩大沙箱。例如 Approve for me 仍保留 Ask for approval 的工作区边界。</p></div>
+          <ol class="setup-list">
+            <li><span>1</span><div><b>确认当前聊天选中的模式</b><p>在输入框下方的权限控制中查看并选择模式。某个模式“可选”不代表当前聊天已经选中了它。</p></div></li>
+            <li><span>2</span><div><b>根据本次任务选择范围</b><p>常规本地任务可先从 Ask for approval 开始；使用自动审查也要记得边界仍受沙箱约束；只有清楚理解更广访问范围后，才选择 Full access。</p></div></li>
+            <li><span>3</span><div><b>在 CLI 检查或调整权限</b><p>Codex CLI 中输入 <code>/permissions</code> 查看权限控制。桌面端和 IDE 扩展可从 composer 下方的权限控件打开。</p></div></li>
+          </ol>
+          <p class="source-caveat">不同模式会受应用版本、执行环境、本地配置和组织要求影响；有的模式可能被禁用或不显示。Managed requirements 也可能限制 Ask for approval。若界面缺少某项，官方建议查看权限排障说明，而不是假定该模式已生效。</p>
+        </section>
+
+        <section class="source-card" aria-label="Foundations 官方来源">
+          <div><p class="section-label">五篇官方原文</p><h2>边学边对照官方页面</h2><p>本页概括当前 Foundations 导航中的五篇文档。模型名称与功能选项会变化；具体细节以打开时的官方原文为准。</p></div>
+          <div class="source-links">
+            <a href="https://learn.chatgpt.com/docs/prompting" target="_blank" rel="noreferrer">Prompting ↗</a>
+            <a href="https://learn.chatgpt.com/docs/model-selection" target="_blank" rel="noreferrer">Model selection ↗</a>
+            <a href="https://learn.chatgpt.com/docs/personalize" target="_blank" rel="noreferrer">Personalize ChatGPT ↗</a>
+            <a href="https://learn.chatgpt.com/docs/skills-and-plugins" target="_blank" rel="noreferrer">Skills &amp; Plugins ↗</a>
+            <a href="https://learn.chatgpt.com/docs/permission-modes" target="_blank" rel="noreferrer">Permissions ↗</a>
+          </div>
+          <small>核对日期：2026-10-22 · 来源：OpenAI 官方 ChatGPT Learn</small>
+        </section>
+
+        <nav class="course-next" aria-label="课程导航"><a href="quickstart.html"><span>上一部分</span><b>Get started · 官方入门 ↗</b></a><a href="index.html#path"><span>回到手册</span><b>查看学习路线 ↗</b></a></nav>
+      </article>
+    </div>
+  </main>
+
+  <footer><a class="brand footer-brand" href="index.html"><span class="brand-mark">C</span><span>Codex <b>实战手册</b></span></a><span>从第一次提问，到独立交付。</span><a href="#main">回到顶部 ↑</a></footer>
+  <script src="script.js"></script>
+</body>
+</html>

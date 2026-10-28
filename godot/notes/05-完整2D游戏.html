@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>05：完整 2D 游戏——Dodge the Creeps</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：05：完整 2D 游戏——Dodge the Creeps">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="05完整-2d-游戏dodge-the-creeps">05：完整 2D 游戏——Dodge the
+Creeps</h1>
+<h2 id="学习目标">学习目标</h2>
+<p>读完后，你应能解释官方 Dodge the Creeps
+项目的场景职责、游戏状态和信号流，而不是只把代码视为一组彼此孤立的片段。</p>
+<h2 id="1-先划分职责再写代码">1. 先划分职责，再写代码</h2>
+<p>官方教程把游戏拆成四个主要部分：</p>
+<table>
+<thead>
+<tr>
+<th>场景/部分</th>
+<th>主要职责</th>
+<th>不应承担的职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Player</code></td>
+<td>读取移动输入、播放动画、限制屏幕范围、检测受击并发出
+<code>hit</code></td>
+<td>决定全局计分、生成敌人、显示开始菜单</td>
+</tr>
+<tr>
+<td><code>Mob</code></td>
+<td>设置外观和初始运动、离屏后删除自己</td>
+<td>修改分数、决定游戏开始或结束</td>
+</tr>
+<tr>
+<td><code>Main</code></td>
+<td>保存分数、控制 Timer、生成敌人、处理 <code>new_game()</code> 与
+<code>game_over()</code></td>
+<td>实现玩家每一帧的移动细节</td>
+</tr>
+<tr>
+<td><code>HUD</code></td>
+<td>显示分数和消息、提供开始按钮、发出 <code>start_game</code></td>
+<td>直接生成敌人或运行游戏计时代码</td>
+</tr>
+</tbody>
+</table>
+<p>这种划分的核心是：<strong>对象处理自身行为，Main 协调整局游戏，HUD
+负责界面并通过信号通知 Main。</strong></p>
+<h2 id="2-玩家输入动画和碰撞">2. 玩家：输入、动画和碰撞</h2>
+<p>官方玩家根节点是 <code>Area2D</code>，包含
+<code>AnimatedSprite2D</code> 与 <code>CollisionShape2D</code>。</p>
+<ul>
+<li><code>Area2D</code> 能检测其他碰撞对象进入，并发出
+<code>body_entered</code>。</li>
+<li><code>AnimatedSprite2D</code> 根据方向选择 <code>walk</code> 或
+<code>up</code>，再调整 <code>flip_h</code>/<code>flip_v</code>。</li>
+<li><code>CollisionShape2D</code> 提供实际碰撞形状；仅添加节点而未设置
+Shape 不会得到期望的碰撞范围。</li>
+</ul>
+<p>移动逻辑有三个关键点：</p>
+<ol type="1">
+<li>每帧从 <code>Vector2.ZERO</code> 开始收集四个方向输入。</li>
+<li>对非零方向调用 <code>normalized()</code>，避免斜向比直线更快。</li>
+<li>乘以 <code>speed * delta</code> 更新位置，再用 <code>clamp()</code>
+限制在视口内。</li>
+</ol>
+<p>受击时，玩家隐藏并发出 <code>hit</code>，同时延迟禁用碰撞形状：</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hide</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>hit.<span class="fu">emit</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$CollisionShape2D</span>.<span class="fu">set_deferred</span>(<span class="st">&quot;disabled&quot;</span>, <span class="va">true</span>)</span></code></pre></div>
+<p><code>set_deferred()</code>
+避免在引擎正在处理碰撞回调时立即修改物理属性。重新开始时，<code>start(pos)</code>
+恢复位置、可见性和碰撞。</p>
+<h2 id="3-敌人可实例化的独立场景">3. 敌人：可实例化的独立场景</h2>
+<p>官方 <code>Mob</code> 使用 <code>RigidBody2D</code>，并包含：</p>
+<ul>
+<li><code>AnimatedSprite2D</code>：随机选择
+<code>fly</code>、<code>swim</code> 或 <code>walk</code>。</li>
+<li><code>CollisionShape2D</code>：定义碰撞范围。</li>
+<li><code>VisibleOnScreenNotifier2D</code>：离屏时发出
+<code>screen_exited</code>，让 Mob 调用 <code>queue_free()</code>。</li>
+</ul>
+<p>教程把 Gravity Scale 设为 0，并调整 Collision Mask
+防止敌人彼此碰撞。Main 只在生成时设置初始
+<code>linear_velocity</code>，之后由物理引擎计算运动，而不是每帧直接改写
+Mob 位置。</p>
+<p><code>queue_free()</code>
+会在当前帧末尾安全删除节点。离屏清理既避免无用节点不断积累，也让每个敌人只关心自己的生命周期。</p>
+<h2 id="4-main状态计时和生成">4. Main：状态、计时和生成</h2>
+<p>Main 根节点使用普通 <code>Node</code>，因为它主要组织逻辑，本身不需要
+2D 变换。</p>
+<p>主要子节点：</p>
+<ul>
+<li><code>Player</code>：玩家场景实例。</li>
+<li><code>StartPosition</code>（<code>Marker2D</code>）：出生位置。</li>
+<li><code>MobTimer</code>：控制敌人生成频率。</li>
+<li><code>ScoreTimer</code>：每秒增加分数。</li>
+<li><code>StartTimer</code>：提供开局准备时间，设为 One Shot。</li>
+<li><code>MobPath</code>（<code>Path2D</code>）与
+<code>MobSpawnLocation</code>（<code>PathFollow2D</code>）：选择屏幕边缘的随机位置和方向。</li>
+<li><code>HUD</code>：界面场景实例。</li>
+</ul>
+<p>通过导出属性接收敌人场景：</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> mob_scene: PackedScene</span></code></pre></div>
+<p>在 Inspector 中把 <code>mob.tscn</code> 赋给该属性后，Main 才能调用
+<code>mob_scene.instantiate()</code>。实例创建后还要
+<code>add_child(mob)</code>，否则它不会进入场景树。</p>
+<p>生成流程可概括为：</p>
+<pre class="text"><code>MobTimer.timeout
+→ instantiate()
+→ 设置 PathFollow2D 的 progress_ratio
+→ 读取随机生成位置和方向
+→ 添加少量随机角度与随机速度
+→ add_child()</code></pre>
+<p>路径应按官方示意绘制，尤其注意顺时针方向；否则敌人朝向可能与预期相反。</p>
+<h2 id="5-游戏状态与信号流">5. 游戏状态与信号流</h2>
+<h3 id="开始游戏">开始游戏</h3>
+<pre class="text"><code>StartButton.pressed
+→ HUD 隐藏按钮并发出 start_game
+→ Main.new_game()
+→ 分数归零、清理旧敌人、重置玩家、更新 HUD
+→ StartTimer.start()
+→ StartTimer.timeout
+→ MobTimer 与 ScoreTimer 开始</code></pre>
+<h3 id="游玩与计分">游玩与计分</h3>
+<pre class="text"><code>ScoreTimer.timeout
+→ score += 1
+→ HUD.update_score(score)</code></pre>
+<h3 id="游戏结束">游戏结束</h3>
+<pre class="text"><code>敌人进入 Player
+→ Player 隐藏、延迟禁用碰撞并发出 hit
+→ Main.game_over()
+→ ScoreTimer 与 MobTimer 停止
+→ HUD.show_game_over()
+→ 显示结束消息，之后重新显示开始按钮</code></pre>
+<p>这条链路说明信号与直接函数调用可以共存：Player 和 HUD
+用信号把事件交给 Main；Main 作为协调者，再调用 HUD 的显示方法。</p>
+<h2 id="6-用-group-清理旧敌人">6. 用 Group 清理旧敌人</h2>
+<p>重开时，上一局敌人可能仍在屏幕中。官方做法是把 Mob 根节点加入
+<code>mobs</code> 组，然后在 <code>new_game()</code> 中调用：</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_tree</span>().<span class="fu">call_group</span>(<span class="st">&quot;mobs&quot;</span>, <span class="st">&quot;queue_free&quot;</span>)</span></code></pre></div>
+<p>组适合对一类对象执行统一操作，不需要 Main 保存每个敌人的引用。</p>
+<h2 id="7-hud-为什么使用-canvaslayer">7. HUD 为什么使用 CanvasLayer</h2>
+<p>HUD 根节点是
+<code>CanvasLayer</code>，让界面绘制在游戏内容上方。<code>ScoreLabel</code>、<code>Message</code>、<code>StartButton</code>
+都是 <code>Control</code> 类型，使用 Anchors 和 Anchor Presets
+布局，而不是只依赖固定像素位置。</p>
+<p><code>MessageTimer</code>
+控制临时消息；<code>await $MessageTimer.timeout</code> 和
+<code>get_tree().create_timer()</code> 可以表达简短的异步显示流程。</p>
+<h2 id="常见误区">常见误区</h2>
+<ul>
+<li><strong>实例化了 Mob，但画面中不存在。</strong> 检查是否
+<code>add_child()</code>，以及 <code>mob_scene</code> 是否已在 Inspector
+赋值。</li>
+<li><strong>斜向移动更快。</strong> 对输入方向先
+<code>normalized()</code>，再乘速度。</li>
+<li><strong>碰撞回调中报物理状态错误。</strong> 对碰撞形状的禁用使用
+<code>set_deferred()</code>。</li>
+<li><strong>重开后旧敌人仍在。</strong> 检查 <code>mobs</code> 组和
+<code>call_group()</code> 清理逻辑。</li>
+<li><strong>游戏自动开始，按钮失去意义。</strong> 接入 HUD 后，移除
+<code>_ready()</code> 中用于测试的 <code>new_game()</code>。</li>
+<li><strong>节点或动画名称找不到。</strong>
+名称区分大小写，<code>$AnimatedSprite2D</code>
+和动画名必须与场景/资源完全一致。</li>
+</ul>
+<h2 id="小结">小结</h2>
+<p>完整项目不是把更多代码放进一个脚本，而是让玩家、敌人、Main 和 HUD
+各自承担明确职责，再用实例化、信号、Timer 和组串起完整状态循环。</p>
+<h2 id="官方来源与下一步">官方来源与下一步</h2>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/index.html">Your
+first 2D game</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/03.coding_the_player.html">Coding
+the player</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/04.creating_the_enemy.html">Creating
+the enemy</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/05.the_main_game_scene.html">The
+main game scene</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/first_2d_game/06.heads_up_display.html">Heads
+up display</a></li>
+<li>对应练习：<a
+href="../exercises/03-完整躲避游戏.html">完整躲避游戏</a></li>
+</ul>
+</main>
+</body>
+</html>

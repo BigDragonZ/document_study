@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Godot 4.7 官方文档中文学习笔记与渐进式练习</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：Godot 4.7 官方文档中文学习笔记与渐进式练习">
+<link rel="stylesheet" href="course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="index.html">Godot 学习路线</a>
+<a href="../index.html">文档研习所首页</a>
+<a href="SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="godot-47-官方文档中文学习笔记与渐进式练习">Godot 4.7
+官方文档中文学习笔记与渐进式练习</h1>
+<p>这套资料依据 <a href="https://docs.godotengine.org/en/stable/">Godot
+Engine stable 官方文档</a>整理。stable 页面当前标示为 <strong>Godot
+4.7</strong>，示例统一使用 <strong>GDScript</strong>。</p>
+<p>它是中文学习导引，不是官方文档的逐段翻译，也不是已经完成的游戏工程。你需要在
+Godot 编辑器中亲自完成练习。</p>
+<h2 id="适合谁">适合谁</h2>
+<ul>
+<li>第一次使用 Godot，希望建立完整基础路径的学习者。</li>
+<li>会一点编程，但不理解节点、场景和信号如何协作的学习者。</li>
+<li>已看过零散教程，希望用一个小游戏串联知识的学习者。</li>
+</ul>
+<p>完全没有编程基础时，先掌握变量、条件、循环和函数，再做练习 02；练习
+01 不需要编程。</p>
+<h2 id="学习路线">学习路线</h2>
+<p>按顺序完成。每个阶段先读笔记，再做练习，最后用验收标准自检。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>笔记</th>
+<th>练习</th>
+<th>完成后的能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 认识 Godot</td>
+<td><a href="notes/01-节点与场景.html">节点与场景</a>、<a
+href="notes/02-场景实例化.html">场景实例化</a></td>
+<td><a
+href="exercises/01-基础场景与实例化.html">基础场景与实例化</a></td>
+<td>创建主场景，复用场景并区分模板默认值与实例覆盖值</td>
+</tr>
+<tr>
+<td>2. 让场景动起来</td>
+<td><a href="notes/03-GDScript与游戏循环.html">GDScript
+与游戏循环</a>、<a href="notes/04-输入与信号.html">输入与信号</a></td>
+<td><a href="exercises/02-脚本输入与信号.html">脚本、输入与信号</a></td>
+<td>编写帧更新、键盘控制、按钮交互、Timer 和自定义信号</td>
+</tr>
+<tr>
+<td>3. 完成游戏闭环</td>
+<td><a href="notes/05-完整2D游戏.html">完整 2D 游戏</a></td>
+<td><a href="exercises/03-完整躲避游戏.html">完整躲避游戏</a></td>
+<td>组织玩家、敌人、主场景和 HUD，完成开始、计分、失败与重开</td>
+</tr>
+<tr>
+<td>4. 自主扩展</td>
+<td><a href="notes/06-进阶学习路线.html">进阶学习路线</a></td>
+<td><a href="exercises/04-扩展挑战.html">扩展挑战</a></td>
+<td>有选择地加入难度、暂停、音频、存档、导出或 3D 功能</td>
+</tr>
+</tbody>
+</table>
+<h2 id="推荐学习方法">推荐学习方法</h2>
+<ol type="1">
+<li><strong>先预测，再运行。</strong>
+修改属性或代码前，先写下你认为会发生什么。</li>
+<li><strong>一次只改一个点。</strong> 出问题时更容易定位原因。</li>
+<li><strong>用验收标准代替“看懂了”。</strong>
+能独立重现运行结果，才算完成。</li>
+<li><strong>保留自己的排错记录。</strong>
+记下错误信息、原因和修复方法。</li>
+<li><strong>不要照抄完整答案。</strong>
+卡顿时先查对应笔记，再查官方页面和编辑器内置类参考。</li>
+</ol>
+<h2 id="环境与常用操作">环境与常用操作</h2>
+<p>准备一个 Godot 4.7 项目。前两个阶段使用新项目自带的
+<code>icon.svg</code> 即可；完整 2D
+游戏练习使用官方教程提供的素材，不需要第三方插件。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>通用快捷键</th>
+<th>macOS 官方教程标示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>运行项目（主场景）</td>
+<td>F5</td>
+<td>Cmd + B</td>
+</tr>
+<tr>
+<td>运行当前场景</td>
+<td>F6</td>
+<td>Cmd + R</td>
+</tr>
+<tr>
+<td>停止运行</td>
+<td>F8</td>
+<td>Cmd + .</td>
+</tr>
+</tbody>
+</table>
+<p>如果“运行项目”和“运行当前场景”的结果不同，先检查是否设置了正确的主场景。</p>
+<h2 id="资料索引">资料索引</h2>
+<h3 id="核心笔记">核心笔记</h3>
+<ul>
+<li><a href="notes/01-节点与场景.html">01：节点与场景</a></li>
+<li><a href="notes/02-场景实例化.html">02：场景实例化</a></li>
+<li><a href="notes/03-GDScript与游戏循环.html">03：GDScript
+与游戏循环</a></li>
+<li><a href="notes/04-输入与信号.html">04：输入与信号</a></li>
+<li><a href="notes/05-完整2D游戏.html">05：完整 2D 游戏</a></li>
+<li><a href="notes/06-进阶学习路线.html">06：进阶学习路线</a></li>
+</ul>
+<h3 id="渐进式练习">渐进式练习</h3>
+<ul>
+<li><a href="exercises/01-基础场景与实例化.html">练习
+01：基础场景与实例化</a></li>
+<li><a href="exercises/02-脚本输入与信号.html">练习
+02：脚本、输入与信号</a></li>
+<li><a href="exercises/03-完整躲避游戏.html">练习
+03：完整躲避游戏</a></li>
+<li><a href="exercises/04-扩展挑战.html">练习 04：扩展挑战</a></li>
+</ul>
+<h3 id="官方出处">官方出处</h3>
+<p><a href="SOURCES.html">SOURCES.md</a>
+汇总了本资料使用的官方页面。每篇笔记和练习也附有就近来源，便于深入阅读。</p>
+<h2 id="版权说明">版权说明</h2>
+<p>Godot 官方文档署名 Juan Liniersky、Ariel Manzur 和 Godot 社区，采用
+CC BY 3.0。这里保留来源链接并进行中文归纳；Godot、节点名称和 API
+名称归各自权利人所有。</p>
+</main>
+</body>
+</html>

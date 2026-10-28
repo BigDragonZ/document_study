@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>练习 02：脚本、输入与信号</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：练习 02：脚本、输入与信号">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="练习-02脚本输入与信号">练习 02：脚本、输入与信号</h1>
+<h2 id="前置知识与准备">前置知识与准备</h2>
+<ul>
+<li>已完成<a href="01-基础场景与实例化.html">练习 01</a>。</li>
+<li>已读：<a href="../notes/03-GDScript与游戏循环.html">GDScript
+与游戏循环</a>、<a
+href="../notes/04-输入与信号.html">输入与信号</a>。</li>
+<li>新建 Godot 4.7 项目，保留默认 <code>icon.svg</code>。</li>
+</ul>
+<h2 id="目标">目标</h2>
+<p>制作一个可转向、前进、暂停和闪烁的图标。按钮切换运动时，同时发出带参数的自定义信号，由另一个脚本更新状态文字。</p>
+<p>最终场景结构：</p>
+<pre class="text"><code>Main（Node2D，main.gd）
+├── Sprite2D（sprite_2d.tscn 实例，sprite_2d.gd）
+│   └── Timer（Autostart 开启）
+├── Button（Text = Toggle motion）
+└── StatusLabel（Label）</code></pre>
+<h2 id="第一部分让图标自动运动">第一部分：让图标自动运动</h2>
+<ol type="1">
+<li>创建 <code>Sprite2D</code> 场景，设置 Texture 为
+<code>icon.svg</code>。</li>
+<li>附加 <code>sprite_2d.gd</code>，使用空模板。</li>
+<li>写入：</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Sprite2D</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">signal</span> <span class="fu">motion_toggled</span>(is_running: bool)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> speed :<span class="op">=</span> <span class="fl">400.0</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>@export <span class="kw">var</span> angular_speed :<span class="op">=</span> <span class="cn">PI</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    rotation <span class="op">+=</span> angular_speed <span class="op">*</span> delta</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> velocity :<span class="op">=</span> Vector2.UP.<span class="fu">rotated</span>(rotation) <span class="op">*</span> speed</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    position <span class="op">+=</span> velocity <span class="op">*</span> delta</span></code></pre></div>
+<ol start="4" type="1">
+<li>保存为 <code>sprite_2d.tscn</code> 并运行当前场景。</li>
+</ol>
+<h3 id="阶段验收">阶段验收</h3>
+<ul>
+<li>图标旋转并沿当前朝向运动。</li>
+<li>在 Inspector 修改 <code>speed</code> 后，运行速度发生相应变化。</li>
+<li>你能解释代码中两个 <code>delta</code> 分别控制什么。</li>
+</ul>
+<h2 id="第二部分改为玩家输入">第二部分：改为玩家输入</h2>
+<p>把 <code>_process()</code> 替换为：</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> direction :<span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> Input.<span class="fu">is_action_pressed</span>(<span class="st">&quot;ui_left&quot;</span>):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        direction <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> Input.<span class="fu">is_action_pressed</span>(<span class="st">&quot;ui_right&quot;</span>):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        direction <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    rotation <span class="op">+=</span> angular_speed <span class="op">*</span> direction <span class="op">*</span> delta</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> velocity :<span class="op">=</span> Vector2.ZERO</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> Input.<span class="fu">is_action_pressed</span>(<span class="st">&quot;ui_up&quot;</span>):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        velocity <span class="op">=</span> Vector2.UP.<span class="fu">rotated</span>(rotation) <span class="op">*</span> speed</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    position <span class="op">+=</span> velocity <span class="op">*</span> delta</span></code></pre></div>
+<h3 id="阶段验收-1">阶段验收</h3>
+<ul>
+<li>未按键时图标不自动旋转或移动。</li>
+<li>左/右键控制转向，上键沿当前朝向前进。</li>
+<li>同时松开按键后，图标停止改变位置和旋转。</li>
+</ul>
+<h2 id="第三部分按钮timer-和自定义信号">第三部分：按钮、Timer
+和自定义信号</h2>
+<ol type="1">
+<li>在 Sprite2D 场景内添加子节点 <code>Timer</code>，保持默认 Wait Time
+为 1 秒，开启 Autostart。</li>
+<li>新建 <code>main.tscn</code>，按目标结构加入 Sprite2D 实例、Button 和
+StatusLabel。</li>
+<li>在 Sprite2D 脚本中加入：</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$Timer</span>.timeout.<span class="bu">connect</span>(<span class="co">_on_timer_timeout</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_timer_timeout</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    visible <span class="op">=</span> <span class="kw">not</span> visible</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_button_pressed</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> is_running :<span class="op">=</span> <span class="kw">not</span> <span class="fu">is_processing</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_process</span>(is_running)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    motion_toggled.<span class="fu">emit</span>(is_running)</span></code></pre></div>
+<ol start="4" type="1">
+<li>在 Main 的 Signals 面板中不用操作；先选中 Button，把它的
+<code>pressed</code> 连接到 Sprite2D 的
+<code>_on_button_pressed()</code>。</li>
+<li>选中 Sprite2D 实例，把自定义 <code>motion_toggled</code> 连接到
+Main。Main 的接收脚本如下：</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node2D</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_sprite_2d_motion_toggled</span>(is_running: bool) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$StatusLabel</span>.text <span class="op">=</span> <span class="st">&quot;Running&quot;</span> <span class="cf">if</span> is_running <span class="cf">else</span> <span class="st">&quot;Stopped&quot;</span></span></code></pre></div>
+<ol start="6" type="1">
+<li>给 StatusLabel 设置初始文字 <code>Running</code>，保存并运行
+Main。</li>
+</ol>
+<h3 id="阶段验收-2">阶段验收</h3>
+<ul>
+<li>Timer 每秒切换一次图标可见性。</li>
+<li>点击 Button 后，图标的运动/暂停状态切换。</li>
+<li>每次切换时，StatusLabel 在 <code>Running</code> 与
+<code>Stopped</code> 之间正确更新。</li>
+<li>信号参数不是硬编码文字：Button 回调发出布尔值，Main 根据收到的值更新
+Label。</li>
+<li>Debugger 没有节点路径或信号连接错误。</li>
+</ul>
+<h2 id="常见错误">常见错误</h2>
+<ul>
+<li><strong><code>$Timer</code> 返回空节点。</strong> Timer 必须是该
+Sprite2D 的子节点，名称和大小写必须一致。</li>
+<li><strong>按钮没有反应。</strong> 检查 <code>pressed</code> 是否连接到
+Sprite2D，而不是只创建了同名函数。</li>
+<li><strong>状态文字不更新。</strong> 检查自定义信号是否连接到
+Main，以及回调参数名和 Label 节点路径。</li>
+<li><strong>运动暂停但闪烁仍继续。</strong> 本练习只切换 Sprite2D 的
+<code>_process()</code>，Timer 是独立子节点；这是预期行为。</li>
+<li><strong>图标跑出窗口。</strong>
+这是本练习的简化行为，边界限制会在完整 2D 游戏中加入。</li>
+</ul>
+<h2 id="拓展挑战选做">拓展挑战（选做）</h2>
+<p>在 Input Map 新建
+<code>turn_left</code>、<code>turn_right</code>、<code>move_forward</code>，同时绑定方向键与
+WASD，再替换脚本中的 <code>ui_*</code> 动作。</p>
+<p>验收：方向键和 WASD 都能控制图标，脚本中不再直接读取物理键值。</p>
+<h2 id="完成标准">完成标准</h2>
+<p>从空脚本重新写出输入控制，并口头说明
+<code>Input</code>、<code>pressed</code>、<code>timeout</code> 和
+<code>motion_toggled</code> 分别代表哪类事件。</p>
+<h2 id="官方来源">官方来源</h2>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/scripting_first_script.html">Creating
+your first script</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/scripting_player_input.html">Listening
+to player input</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/signals.html">Using
+signals</a></li>
+</ul>
+<p>下一阶段：<a href="03-完整躲避游戏.html">完整躲避游戏</a></p>
+</main>
+</body>
+</html>

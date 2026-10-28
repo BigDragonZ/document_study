@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>04：输入与信号</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：04：输入与信号">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="04输入与信号">04：输入与信号</h1>
+<h2 id="学习目标">学习目标</h2>
+<p>读完后，你应能区分持续输入与离散事件，并通过内置或自定义信号让节点协作。</p>
+<h2 id="1-两种输入处理方式">1. 两种输入处理方式</h2>
+<h3 id="输入回调">输入回调</h3>
+<p><code>_unhandled_input(event)</code>
+适合响应“发生了一次”的事件，例如按一下跳跃键、点击鼠标或打开菜单。</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_unhandled_input</span>(event: InputEvent) <span class="op">-&gt;</span> void:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> event.<span class="fu">is_action_pressed</span>(<span class="st">&quot;jump&quot;</span>):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Jump pressed&quot;</span>)</span></code></pre></div>
+<p>它关注的是事件本身，而不是每帧持续查询状态。</p>
+<h3 id="input-单例轮询">Input 单例轮询</h3>
+<p><code>Input</code>
+是全局可访问的单例。<code>Input.is_action_pressed()</code> 适合在
+<code>_process()</code> 中持续检查方向键、移动键是否处于按下状态。</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_process</span>(delta: float) <span class="op">-&gt;</span> void:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> direction :<span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> Input.<span class="fu">is_action_pressed</span>(<span class="st">&quot;ui_left&quot;</span>):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        direction <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> Input.<span class="fu">is_action_pressed</span>(<span class="st">&quot;ui_right&quot;</span>):</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        direction <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    rotation <span class="op">+=</span> angular_speed <span class="op">*</span> direction <span class="op">*</span> delta</span></code></pre></div>
+<p>选择规则：</p>
+<ul>
+<li>“按住时持续移动” → 每帧轮询 Input。</li>
+<li>“按一下触发动作” → 输入回调或相应的单次动作 API。</li>
+</ul>
+<h2 id="2-input-map-与输入动作">2. Input Map 与输入动作</h2>
+<p>不要只把逻辑绑定到某个物理键。Godot
+用**动作（action）**把“玩家意图”和一个或多个按键、手柄输入关联起来。</p>
+<p>在 <strong>Project → Project Settings → Input Map</strong>
+中可以查看和编辑动作。<code>ui_left</code>、<code>ui_right</code>、<code>ui_up</code>
+等是项目预置动作；项目通常还应定义自己的
+<code>move_left</code>、<code>jump</code> 等动作。</p>
+<p>这样，玩家换键或增加手柄支持时，游戏逻辑仍然只读取动作名。</p>
+<h2 id="3-信号是什么">3. 信号是什么</h2>
+<p>信号（Signal）是节点在特定事件发生时发出的消息。其他节点可以连接信号，并在事件发生时调用接收函数。</p>
+<p>例如：</p>
+<ul>
+<li><code>Button.pressed</code>：按钮被按下。</li>
+<li><code>Timer.timeout</code>：计时结束。</li>
+<li>自定义 <code>health_changed</code>：生命值发生变化。</li>
+</ul>
+<p>信号让发送方不必知道接收方的具体实现，从而减少耦合。玩家只负责发出
+<code>health_changed</code>，HUD
+决定如何显示，无需玩家直接操作每个界面元素。</p>
+<h2 id="4-在编辑器中连接信号">4. 在编辑器中连接信号</h2>
+<p>以按钮控制运动为例：</p>
+<ol type="1">
+<li>选中 <code>Button</code>。</li>
+<li>打开 Signals 面板。</li>
+<li>双击 <code>pressed</code>。</li>
+<li>选择挂有接收脚本的节点。</li>
+<li>连接并编写回调。</li>
+</ol>
+<p>GDScript 回调通常命名为 <code>_on_节点名_信号名</code>：</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_button_pressed</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_process</span>(<span class="kw">not</span> <span class="fu">is_processing</span>())</span></code></pre></div>
+<p>这里并没有修改按钮，而是切换当前节点的每帧处理状态。</p>
+<h2 id="5-在代码中连接信号">5. 在代码中连接信号</h2>
+<p>动态实例化的节点通常需要在代码中连接。以下代码在
+<code>_ready()</code> 中获取 Timer 并连接 <code>timeout</code>：</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="bu">_ready</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> timer <span class="op">=</span> <span class="fu">get_node</span>(<span class="st">&quot;Timer&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    timer.timeout.<span class="bu">connect</span>(<span class="co">_on_timer_timeout</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">_on_timer_timeout</span>() <span class="op">-&gt;</span> void:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    visible <span class="op">=</span> <span class="kw">not</span> visible</span></code></pre></div>
+<p>要点：</p>
+<ul>
+<li>对信号对象调用 <code>connect()</code>，传入接收函数。</li>
+<li><code>_ready()</code> 是连接已有子节点信号的常见位置。</li>
+<li>如果重命名 Timer，节点路径也必须同步更新。</li>
+</ul>
+<h2 id="6-自定义信号与参数">6. 自定义信号与参数</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode gdscript"><code class="sourceCode gdscript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">extends</span> Node2D</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">signal</span> <span class="fu">health_changed</span>(old_value: int, new_value: int)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">signal</span> health_depleted</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> health :<span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="fu">take_damage</span>(amount: int) <span class="op">-&gt;</span> void:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> old_health :<span class="op">=</span> health</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    health <span class="op">=</span> <span class="fu">maxi</span>(health <span class="op">-</span> amount, <span class="dv">0</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    health_changed.<span class="fu">emit</span>(old_health, health)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> health <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        health_depleted.<span class="fu">emit</span>()</span></code></pre></div>
+<ul>
+<li><code>signal</code> 声明信号及参数。</li>
+<li>对信号调用 <code>emit()</code> 发出消息。</li>
+<li>接收方按声明的参数读取变化。</li>
+<li>信号通常表示刚发生的事件，名称常用过去式或完成态，如
+<code>died</code>、<code>health_changed</code>。</li>
+</ul>
+<p>调用方必须保证发出的参数数量、顺序和含义与接收方预期一致。</p>
+<h2 id="常见误区">常见误区</h2>
+<ul>
+<li><strong>持续移动只响应一次。</strong>
+检查是否把按住状态误当成单次事件处理。</li>
+<li><strong>节点改名后信号失效。</strong> 检查 <code>get_node()</code>
+或节点路径是否仍指向原节点。</li>
+<li><strong>信号似乎触发两次。</strong>
+检查编辑器和代码是否重复连接，或初始化代码是否执行了多次。</li>
+<li><strong>玩家脚本塞满 HUD 操作。</strong>
+考虑由玩家发出状态变化信号，让 HUD 自己更新。</li>
+<li><strong>把信号当普通函数调用。</strong> 使用
+<code>signal_name.emit()</code> 发出，用
+<code>signal_name.connect(callback)</code> 连接。</li>
+</ul>
+<h2 id="小结">小结</h2>
+<p>Input
+回答“玩家现在按着什么”，输入事件回答“玩家刚刚做了什么”，信号回答“游戏对象刚刚发生了什么”。三者配合，可以形成清晰、低耦合的交互流程。</p>
+<h2 id="官方来源与下一步">官方来源与下一步</h2>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/scripting_player_input.html">Listening
+to player input</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/signals.html">Using
+signals</a></li>
+<li><a
+href="https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_basics.html">GDScript
+reference</a></li>
+<li>上一篇：<a href="03-GDScript与游戏循环.html">GDScript
+与游戏循环</a></li>
+<li>对应练习：<a
+href="../exercises/02-脚本输入与信号.html">脚本、输入与信号</a></li>
+</ul>
+</main>
+</body>
+</html>

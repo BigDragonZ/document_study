@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>01：节点与场景</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<meta name="description" content="Godot 4.7 官方文档中文学习资料：01：节点与场景">
+<link rel="stylesheet" href="../course.css">
+</head>
+<body>
+<a class="skip-link" href="#content">跳到主要内容</a>
+<nav class="godot-nav" aria-label="Godot 学习导航">
+<a href="../index.html">Godot 学习路线</a>
+<a href="../../index.html">文档研习所首页</a>
+<a href="../SOURCES.html">官方出处</a>
+</nav>
+<main id="content" class="godot-content">
+<h1 id="01节点与场景">01：节点与场景</h1>
+<h2 id="学习目标">学习目标</h2>
+<p>读完后，你应能解释
+Node、Scene、场景树和主场景分别是什么，并分清“运行当前场景”与“运行项目”。</p>
+<h2 id="1-两个核心概念">1. 两个核心概念</h2>
+<p>Godot
+游戏可以概括为：<strong>一棵由场景组成的树，而每个场景又是一棵由节点组成的树。</strong></p>
+<h3 id="节点node">节点（Node）</h3>
+<p>节点是游戏的基本构建块。不同节点负责不同能力，例如：</p>
+<ul>
+<li><code>Sprite2D</code> 显示二维图片。</li>
+<li><code>Camera2D</code> 提供二维摄像机。</li>
+<li><code>CollisionShape2D</code> 描述碰撞形状。</li>
+<li><code>Timer</code> 处理计时。</li>
+<li><code>Label</code> 显示文字。</li>
+</ul>
+<p>节点具有以下共同特征：</p>
+<ul>
+<li>有名称和可在 Inspector 中编辑的属性。</li>
+<li>能接收引擎回调，例如每帧更新。</li>
+<li>能通过脚本扩展属性和函数。</li>
+<li>能成为另一个节点的子节点。</li>
+</ul>
+<p>节点本身通常只提供一类能力。把多个节点组合起来，才形成完整的游戏对象。</p>
+<h3 id="场景scene">场景（Scene）</h3>
+<p>把一组节点组织成树并保存，就得到场景。场景有一个根节点，可以保存为
+<code>.tscn</code> 文件，也可以作为整体放入其他场景。</p>
+<p>例如，一个玩家场景可以这样想：</p>
+<pre class="text"><code>Player（CharacterBody2D，根节点）
+├── Sprite2D（显示形象）
+├── CollisionShape2D（描述碰撞范围）
+└── Camera2D（让镜头跟随）</code></pre>
+<p>保存后，<code>Player</code>
+不只是若干松散节点，而是一个可复用的整体。</p>
+<h2 id="2-场景树与主场景">2. 场景树与主场景</h2>
+<p>Godot
+编辑器本质上是一个场景编辑器。一个项目可以有很多场景，例如：</p>
+<pre class="text"><code>Main
+├── Player（Player 场景的实例）
+├── Level
+│   ├── Ground
+│   └── Obstacles
+└── HUD</code></pre>
+<p>运行项目时，引擎需要一个入口，这个入口就是<strong>主场景（Main
+Scene）</strong>。主场景路径保存在 <code>project.godot</code>
+中，通常通过编辑器设置，而不是手动修改文件。</p>
+<ul>
+<li><strong>运行当前场景</strong>：只运行编辑器里正在编辑的场景，适合局部测试。</li>
+<li><strong>运行项目</strong>：从主场景启动，适合验证完整流程。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>通用快捷键</th>
+<th>macOS 官方教程标示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>运行项目</td>
+<td>F5</td>
+<td>Cmd + B</td>
+</tr>
+<tr>
+<td>运行当前场景</td>
+<td>F6</td>
+<td>Cmd + R</td>
+</tr>
+<tr>
+<td>停止运行</td>
+<td>F8</td>
+<td>Cmd + .</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-编辑器中的三个常用面板">3. 编辑器中的三个常用面板</h2>
+<ul>
+<li><strong>Scene
+面板</strong>：查看当前场景的节点树，添加、删除和组织节点。</li>
+<li><strong>Inspector 面板</strong>：查看并修改所选节点的属性。例如选中
+<code>Label</code> 后修改 <code>Text</code>。</li>
+<li><strong>FileSystem
+面板</strong>：管理项目内的场景、脚本、图片等资源。</li>
+</ul>
+<p>新建空场景时，编辑器提供 2D Scene、3D Scene、User Interface 和 Other
+Node 等入口。它们只是快捷方式，并不限制你之后添加其他类型的子节点。</p>
+<h2 id="4-res-是什么">4. <code>res://</code> 是什么</h2>
+<p><code>res://</code> 表示项目根目录。例如：</p>
+<pre class="text"><code>res://scenes/player.tscn
+res://icon.svg</code></pre>
+<p>Godot 编辑器的保存对话框通常要求把项目资源保存在项目目录内。养成按
+<code>scenes/</code>、<code>scripts/</code>、<code>assets/</code>
+分类的习惯，但不要为了目录结构牺牲简单性。</p>
+<h2 id="5-最小操作流程">5. 最小操作流程</h2>
+<ol type="1">
+<li>新建项目并创建场景。</li>
+<li>添加一个 <code>Label</code> 作为根节点。</li>
+<li>在 Inspector 中把 <code>Text</code> 改为
+<code>Hello World</code>。</li>
+<li>保存为 <code>label.tscn</code>。</li>
+<li>运行当前场景，确认窗口显示文字。</li>
+<li>将它设为主场景，再运行项目。</li>
+</ol>
+<p>这个流程同时验证了节点、属性、场景保存和主场景设置。</p>
+<h2 id="常见误区">常见误区</h2>
+<ul>
+<li><strong>“一个项目只能有一个场景。”</strong>
+错。项目可以有任意多个场景，只需要指定一个主场景作为入口。</li>
+<li><strong>“运行按钮看到的都应该是整个项目。”</strong>
+不一定。运行当前场景只测试当前场景。</li>
+<li><strong>“节点越多越好。”</strong>
+不是。节点应承担明确职责，结构以清晰为准。</li>
+<li><strong>“Inspector 显示的名称就是代码名称。”</strong> Inspector 常用
+Title Case，GDScript 属性通常使用
+snake_case；可悬停属性查看说明与标识符。</li>
+</ul>
+<h2 id="小结">小结</h2>
+<p>节点提供能力，场景组织节点，主场景提供项目入口。先学会阅读和搭建场景树，再进入实例化与脚本会容易得多。</p>
+<h2 id="官方来源与下一步">官方来源与下一步</h2>
+<ul>
+<li><a
+href="https://docs.godotengine.org/en/stable/getting_started/step_by_step/nodes_and_scenes.html">Nodes
+and Scenes</a></li>
+<li>下一篇：<a href="02-场景实例化.html">场景实例化</a></li>
+<li>对应练习：<a
+href="../exercises/01-基础场景与实例化.html">基础场景与实例化</a></li>
+</ul>
+</main>
+</body>
+</html>
